@@ -1,0 +1,47 @@
+/*https://stackoverflow.com/questions/3540194/how-to-make-a-grid-like-graph-paper-grid-with-just-css*/
+
+body {
+  height: 75px;
+  background-size: 40px 40px;
+  background-image: radial-gradient(circle, #000000 1px, rgba(0, 0, 0, 0) 1px);
+}
+header {
+  margin: 0px auto;
+  text-align: center;
+  font-family: 'Georgia', serif;
+
+}
+h1{
+  margin-bottom: 5px;
+}
+h3 {
+  margin-top: 3px;
+}
+#rightside{
+  font-family: 'Georgia', serif;
+  float: right;
+  background-color: #FAEBD7;
+  border-style: solid;
+  border-color: black;
+  padding: 10px;
+  padding-bottom: 250px;
+  width: 135px;
+}
+#bar{
+  text-align: center;
+}
+#btn{
+  margin-left: 30%;
+}
+
+#functDisplay {
+  text-align: center;
+}
+
+#crt {
+  margin-left: 30%;
+}
+
+#container {
+  border-color: black;
+}

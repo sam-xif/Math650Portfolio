@@ -1,3 +1,105 @@
-<html>
+<!-- Still have to make draggable. Add algorithm. Make function creation better -->
+<!-- Add CSS for combining it all -->
 
-</html
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Chain Rule</title>
+    <link href="style.css" type="text/css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+  </head>
+  <body>
+    <header>
+        <h1>
+          Multivariate Chain Rule
+        </h1>
+        <h3>By Sam Xifaras and Malcolm Essaid</h3>
+    </header>
+    <div id = "container"><div>
+    <aside id="rightside">
+      <input input="text" value= "Number of Inputs" id ="bar"> <br>
+      <button type="button" name="button" id="btn">Submit</button>
+      <p id = "functDisplay"></p>
+      <button type="button" name="button" id = "crt">Create</button>
+    </aside>
+  </body>
+  <script>
+
+  //Probalby want to make the dataset an Array of Dicts
+  functionSet = [];
+
+  const width = 750,
+        height = 450,
+        margin = {
+            top: 10,
+            bottom: 100,
+            left: 100,
+            right: 10,
+        };
+
+  var svg = d3.select("#container").append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .style("margin", "0 auto")
+      .style("display", "block")
+      .style("overflow", "visible");
+
+
+
+
+
+  document.getElementById('bar').addEventListener("click", function(){
+    document.getElementById('bar').value = "";
+  });
+  document.getElementById('btn').addEventListener("click", function(){
+    var x = document.getElementById('bar').value;
+    if (x != "Number of Inputs" && !isNaN(x) && x < 26){
+      document.getElementById('functDisplay').innerHTML = ("F(" + createTextofFucntion(x) +")")
+    }
+    if (isNaN(x)){
+      document.getElementById('bar').value = "Please put in a number"
+    }
+    if (x > 26){
+      document.getElementById('bar').value = "Pick a Lower Number"
+    }
+  });
+
+  document.getElementById('crt').addEventListener('click', function(){
+    bindSzn();
+  })
+  function createTextofFucntion(n){
+    var abc = "yzwvutsrqponmlkjihgfedcba";
+    var inputFun = "x";
+    for (var i = 0; i < n - 1; i++) {
+      inputFun = inputFun + ", " + abc.charAt(i);
+    }
+    console.log(inputFun);
+    functionSet.push(inputFun)
+    return (inputFun)
+
+  }
+  function bindSzn(){
+    svg.selectAll("circle")
+      .data(functionSet)
+      .enter()
+      .append("circle")
+      .style('fill', "red")
+      .attr('r', "25")
+      .attr("cx", "100")
+      .attr("cy", "100")
+      .text()
+    console.log(3)
+    console.log(JSON.stringify(functionSet))
+  }
+
+
+
+
+
+
+
+  </script>
+
+</html>
