@@ -162,7 +162,10 @@ of the extra input bars 4.-->
             else if (line != null) {
                 line.attr("x2", x).attr("y2", y);
             }
-        });
+        })
+      .on("contextmenu", function (d) {
+          d3.event.preventDefault();
+      });
 
   var circles = svg.append("g");
   var linesg = svg.append("g");
@@ -298,7 +301,7 @@ of the extra input bars 4.-->
         .attr("cy", 0)
       group.append("text")
         .attr("x", 0)
-        .attr("y", 0)
+        .attr("y", -20)
         .attr("text-anchor", "middle")
         .html(function (d) {
             return d[0];
