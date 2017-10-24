@@ -21,10 +21,12 @@ h3 {
   float: right;
 }
 
-#bar{
+#btn{
+  font-size: 10px;
+}
+#bar {
   text-align: center;
 }
-
 #functDisplay {
   text-align: center;
 }

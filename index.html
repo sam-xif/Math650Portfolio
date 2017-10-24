@@ -29,11 +29,11 @@ of the extra input bars 4.-->
     </div>
     <aside class = "sideBars" id="rightside">
       <input input="text" value= "Number of Inputs" id ="bar"> <br>
-      <button type="button" name="button" id="btn">Submit</button>
+      <button type="button" name="button" id="btn">Create Father Function</button>
       <p id = "functDisplay"></p>
       <div id="textboxes"></div>
       <button type="button" name="button" id = "crtSub">Create Sub Functions </button>
-      <button type="button" name="button" id = "crt">Create</button> <br>
+      <button type="button" name="button" id = "crt">Create Nodes</button> <br>
       <button type="button" name="button" id = 'clear'>Clear</button>
     </aside>
   </body>
@@ -83,6 +83,12 @@ of the extra input bars 4.-->
       .remove();
     svg.selectAll('text')
       .remove()
+
+      d3.selectAll(".subFunction").remove();
+      d3.selectAll(".listFunction").remove();
+    document.getElementById('functDisplay').innerHTML = '';
+    document.getElementById('bar').value = 'Number of Inputs';
+
   })
 
 
@@ -99,7 +105,7 @@ of the extra input bars 4.-->
   document.getElementById('btn').addEventListener("click", function(){
     var x = document.getElementById('bar').value;
     if (x != "Number of Inputs" && !isNaN(x) && x < 26){
-      document.getElementById('functDisplay').innerHTML = (createTextofFucntion(x,0))
+      document.getElementById('functDisplay').innerHTML = (createTextofFucntion(x,0, true))
       valuesNaught = x;
       for (var i = 0; i < valuesNaught; i++) {
         var abc = "xyzwvutsrqponmlkjihgfedcba";
@@ -109,7 +115,7 @@ of the extra input bars 4.-->
         document.getElementById('textboxes').appendChild(y)
       }
       console.log(createTextofFucntion(x,0))
-      document.getElementById('leftside').appendChild(list(createTextofFucntion(x,0)));
+      document.getElementById('leftside').appendChild(list(createTextofFucntion(x,0, false)));
     }
     if (isNaN(x)){
       document.getElementById('bar').value = "Please put in a number"
@@ -128,11 +134,12 @@ of the extra input bars 4.-->
     var x = document.createElement('p');
     x.innerHTML = ''+n;
     x.style.margin = 0;
+    x.className = "listFunction"
     return x;
   }
 
 // Creates the top Function.
-  function createTextofFucntion(n, level){
+  function createTextofFucntion(n, level, doPush){
     var abc = "yzwvutsrqponmlkjihgfedcba";
     var inputFun = "x";
     for (var i = 0; i < n - 1; i++) {
@@ -140,7 +147,9 @@ of the extra input bars 4.-->
     }
     inputFun = "F(" + inputFun + ")";
     var temp = [inputFun, level];
-    functionSet.push(temp)
+    if (doPush){
+      functionSet.push(temp)
+    }
     return (inputFun)
 
   }
