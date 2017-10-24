@@ -15,6 +15,18 @@ of the extra input bars 4.-->
     <title>Chain Rule</title>
     <link href="style.css" type="text/css" rel="stylesheet">
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js">
+        MathJax.Hub.Config({
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+            tex2jax: {
+                inlineMath: [['$', '$'], ["\\(", "\\)"]],
+                displayMath: [['$$', '$$'], ["\\[", "\\]"]],
+            },
+            "HTML-CSS": { availableFonts: ["TeX"] }
+        });
+    </script>
+
   </head>
   <body>
     <header>
@@ -23,6 +35,8 @@ of the extra input bars 4.-->
         </h1>
         <h3>By Sam Xifaras and Malcolm Essaid</h3>
     </header>
+      <div id="derivative">
+      </div>
     <div id = "container"><div>
     <div class = "sideBars" id = "leftside">
       <h5>Functions:</h5>
@@ -176,8 +190,6 @@ of the extra input bars 4.-->
             return d[0];
         });
   }
-
-
 
   </script>
 
