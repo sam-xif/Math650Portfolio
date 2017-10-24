@@ -94,12 +94,18 @@ of the extra input bars 4.-->
               var c = circles.selectAll("g")
                 .each(function (d) {
                     var elem = d3.select(this);
-                    if (elem != lineSrc) {
-                        var distance = Math.sqrt(Math.pow(x - elem.attr("ix"), 2), Math.pow(y - elem.attr("iy"), 2));
+                    console.log("PROCESSING");
+
+                    console.log(elem.node() +  "," + lineSrc.node());
+                    if (!elem.node().isEqualNode(lineSrc.node())) {
+                        var distance = Math.sqrt(Math.pow(x - elem.attr("ix"), 2) + Math.pow(y - elem.attr("iy"), 2));
                         if (minDistance == null || distance < minDistance) {
                             minDistance = distance;
                             target = elem;
                         }
+                    }
+                    else {
+                        console.log("EQUAL");
                     }
                 });
 
@@ -107,6 +113,16 @@ of the extra input bars 4.-->
               // If line is not targetted or target and source are already connected, remove
               if (minDistance > defaultRadius) {
                   line.remove();
+              }
+              else {
+                  line.attr("x2", target.attr("ix"))
+                    .attr("y2", target.attr("iy"));
+
+                  lines.push({
+                      "line": line,
+                      "source": lineSrc,
+                      "target": target
+                  });
               }
 
 
@@ -128,11 +144,26 @@ of the extra input bars 4.-->
                 dragObj.attr("transform", "translate(" + x + "," + y + ")")
                     .attr("ix", x)
                     .attr("iy", y);
+
+                // TODO: Update lines connected to dragObj
+                for (var i = 0; i < lines.length; i++) {
+                    if (dragObj.node().isEqualNode(lines[i].source.node())) {
+                        lines[i].line.attr("x1", x);
+                        lines[i].line.attr("y1", y);
+                    }
+                    else if (dragObj.node().isEqualNode(lines[i].target.node())) {
+                        lines[i].line.attr("x2", x);
+                        lines[i].line.attr("y2", y);
+                    }
+                }
+
             }
             else if (line != null) {
                 line.attr("x2", x).attr("y2", y);
             }
 
+
+            // TODO: Update line positions
         });
 
   var circles = svg.append("g");
