@@ -57,8 +57,14 @@ of the extra input bars 4.-->
   var functionSet = [];
   var valuesNaught = 0;
 
-      var functionSet = [];
-      var dragObj = null;
+  var dragObj = null;
+
+  var lineSrc = null;
+      var line = null;
+      var lines = [];
+      var defaultRadius = 40;
+
+      var adjacencyMatrix = [];
 
   const width = 750,
         height = 450,
@@ -76,7 +82,39 @@ of the extra input bars 4.-->
       .style("display", "block")
       .style("overflow", "visible")
       .on("mouseup", function (d) {
+
+          if (line != null) {
+              var coordinates = [0, 0];
+              coordinates = d3.mouse(this);
+              var x = coordinates[0];
+              var y = coordinates[1];
+
+              var minDistance = null;
+              var target = null;
+              var c = circles.selectAll("g")
+                .each(function (d) {
+                    var elem = d3.select(this);
+                    if (elem != lineSrc) {
+                        var distance = Math.sqrt(Math.pow(x - elem.attr("ix"), 2), Math.pow(y - elem.attr("iy"), 2));
+                        if (minDistance == null || distance < minDistance) {
+                            minDistance = distance;
+                            target = elem;
+                        }
+                    }
+                });
+
+              console.log(minDistance);
+              // If line is not targetted or target and source are already connected, remove
+              if (minDistance > defaultRadius) {
+                  line.remove();
+              }
+
+
+          }
+
           dragObj = null;
+          line = null;
+          lineSrc = null;
       })
         .on("mousemove", function (d) {
             var coordinates = [0, 0];
@@ -84,13 +122,21 @@ of the extra input bars 4.-->
             var x = coordinates[0];
             var y = coordinates[1];
 
-            if (dragObj == null)
+            if (dragObj == null && line == null)
                 return;
-
-            dragObj.attr("transform", "translate(" + x + "," + y + ")");
+            else if (dragObj != null) {
+                dragObj.attr("transform", "translate(" + x + "," + y + ")")
+                    .attr("ix", x)
+                    .attr("iy", y);
+            }
+            else if (line != null) {
+                line.attr("x2", x).attr("y2", y);
+            }
 
         });
 
+  var circles = svg.append("g");
+  var linesg = svg.append("g");
 
   document.getElementById('clear').addEventListener('click', function(){
     svg.selectAll('circle')
@@ -168,18 +214,57 @@ of the extra input bars 4.-->
 
   }
 
-  function createFunction(){
-      var group = svg.selectAll("g")
+  function createFunction() {
+      // Number of circles
+      var matrix_size = functionSet.length;
+      for (var i = 0; i < matrix_size; i++) {
+          var subArray = []
+          for (var j = 0; j < matrix_size; j++) {
+              subArray.push(0);
+          }
+          adjacencyMatrix.push(subArray);
+      }
+
+      var group = circles.selectAll("g")
         .data(functionSet)
         .enter()
         .append("g")
         .attr("transform", "translate(" + 100 + "," + 100 + ")")
+        .attr("ix", 100)
+        .attr("iy", 100)
         .on("mousedown", function (d) {
-            dragObj = d3.select(this);
+            if (d3.event.button == 0) {
+                line = null;
+                dragObj = d3.select(this);
+            }
+            else {
+                // Make sure dragObj is null
+                dragObj = null;
+
+                var elem = d3.select(this);
+
+                // add line drawing mechanic
+                var coordinates = [0, 0];
+                coordinates = d3.mouse(this);
+                var x = coordinates[0];
+                var y = coordinates[1];
+
+                line = linesg.append("line")
+                    .attr("x1", elem.attr("ix"))
+                    .attr("x2", x)
+                    .attr("y1", elem.attr("iy"))
+                    .attr("y2", y)
+                    .attr("stroke-width", 4)
+                    .attr("stroke", "black");
+                //.classed("line-draggable", true);
+
+                lineSrc = elem;
+            }
+               
         });
       group.append("circle")
         .style('fill', "#e0e0e0")
-        .attr('r', 40)
+        .attr('r', defaultRadius)
         .attr("cx", 0)
         .attr("cy", 0)
       group.append("text")
