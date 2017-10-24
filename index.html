@@ -90,10 +90,7 @@ of the extra input bars 4.-->
     var set = document.getElementsByClassName('subFunction');
     for (var i = 0; i < set.length; i++) {
       functionSet.push([set[i].value, 1])
-      var x = document.createElement('p');
-      x.innerHTML = '\n'+set[i].value;
-      x.style.margin =0;
-      document.getElementById('leftside').appendChild(x);
+      document.getElementById('leftside').appendChild(list(set[i].value));
     }
   })
   document.getElementById('bar').addEventListener("click", function(){
@@ -106,11 +103,13 @@ of the extra input bars 4.-->
       valuesNaught = x;
       for (var i = 0; i < valuesNaught; i++) {
         var abc = "xyzwvutsrqponmlkjihgfedcba";
-        var x = document.createElement("input");
-        x.classList.add("subFunction");
-        x.value = abc.charAt(i)+ " = ";
-        document.getElementById('textboxes').appendChild(x)
+        var y = document.createElement("input");
+        y.classList.add("subFunction");
+        y.value = abc.charAt(i)+ " = ";
+        document.getElementById('textboxes').appendChild(y)
       }
+      console.log(createTextofFucntion(x,0))
+      document.getElementById('leftside').appendChild(list(createTextofFucntion(x,0)));
     }
     if (isNaN(x)){
       document.getElementById('bar').value = "Please put in a number"
@@ -125,6 +124,12 @@ of the extra input bars 4.-->
     createFunction();
   })
 
+  function list(n){
+    var x = document.createElement('p');
+    x.innerHTML = ''+n;
+    x.style.margin = 0;
+    return x;
+  }
 
 // Creates the top Function.
   function createTextofFucntion(n, level){
