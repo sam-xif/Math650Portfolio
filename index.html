@@ -1,5 +1,9 @@
-﻿<!-- Still have to make draggable. Add algorithm. Make function creation better -->
+﻿<!-- Add algorithm. Make function creation better -->
 <!-- Add CSS for combining it all -->
+
+
+<!-- 1. Make it one input function bar 2. Add levels 3. figure out how to get rid
+of the extra input bars 4.-->
 
 
 <!-- https://stackoverflow.com/questions/13152578/create-a-draggable-div-in-native-javascript -->
@@ -20,19 +24,22 @@
         <h3>By Sam Xifaras and Malcolm Essaid</h3>
     </header>
     <div id = "container"><div>
-    <aside id="rightside">
+    <div class = "sideBars" id = "leftside">
+      <h5>Functions:</h5>
+    </div>
+    <aside class = "sideBars" id="rightside">
       <input input="text" value= "Number of Inputs" id ="bar"> <br>
       <button type="button" name="button" id="btn">Submit</button>
       <p id = "functDisplay"></p>
       <div id="textboxes"></div>
       <button type="button" name="button" id = "crtSub">Create Sub Functions </button>
-      <button type="button" name="button" id = "crt">Create</button>
+      <button type="button" name="button" id = "crt">Create</button> <br>
       <button type="button" name="button" id = 'clear'>Clear</button>
     </aside>
   </body>
   <script>
 
-  //Probalby want to make the dataset an Array of Dicts
+
   var functionSet = [];
   var valuesNaught = 0;
 
@@ -58,13 +65,11 @@
           dragObj = null;
       })
         .on("mousemove", function (d) {
-          //  console.log(svg.node().clientX);
             var coordinates = [0, 0];
             coordinates = d3.mouse(this);
             var x = coordinates[0];
             var y = coordinates[1];
 
-          //  console.log(x + "," + y);
             if (dragObj == null)
                 return;
 
@@ -76,18 +81,20 @@
   document.getElementById('clear').addEventListener('click', function(){
     svg.selectAll('circle')
       .remove();
+    svg.selectAll('text')
+      .remove()
   })
 
 
   document.getElementById('crtSub').addEventListener('click', function(){
     var set = document.getElementsByClassName('subFunction');
     for (var i = 0; i < set.length; i++) {
-      console.log(set[i].value)
-      functionSet.push(set[i].value)
+      functionSet.push([set[i].value, 1])
+      var x = document.createElement('p');
+      x.innerHTML = '\n'+set[i].value;
+      x.style.margin =0;
+      document.getElementById('leftside').appendChild(x);
     }
-    console.log(JSON.stringify(functionSet))
-
-
   })
   document.getElementById('bar').addEventListener("click", function(){
     document.getElementById('bar').value = "";
@@ -95,7 +102,7 @@
   document.getElementById('btn').addEventListener("click", function(){
     var x = document.getElementById('bar').value;
     if (x != "Number of Inputs" && !isNaN(x) && x < 26){
-      document.getElementById('functDisplay').innerHTML = (createTextofFucntion(x))
+      document.getElementById('functDisplay').innerHTML = (createTextofFucntion(x,0))
       valuesNaught = x;
       for (var i = 0; i < valuesNaught; i++) {
         var abc = "xyzwvutsrqponmlkjihgfedcba";
@@ -113,20 +120,22 @@
     }
   });
 
-
+// Creates all Functions
   document.getElementById('crt').addEventListener('click', function(){
     createFunction();
   })
 
-  function createTextofFucntion(n){
+
+// Creates the top Function.
+  function createTextofFucntion(n, level){
     var abc = "yzwvutsrqponmlkjihgfedcba";
     var inputFun = "x";
     for (var i = 0; i < n - 1; i++) {
       inputFun = inputFun + ", " + abc.charAt(i);
     }
     inputFun = "F(" + inputFun + ")";
-    console.log(inputFun);
-    functionSet.push(inputFun)
+    var temp = [inputFun, level];
+    functionSet.push(temp)
     return (inputFun)
 
   }
@@ -150,10 +159,8 @@
         .attr("y", 0)
         .attr("text-anchor", "middle")
         .html(function (d) {
-            return d;
+            return d[0];
         });
-    console.log(3)
-    console.log(JSON.stringify(functionSet))
   }
 
 

@@ -18,30 +18,39 @@ h3 {
   margin-top: 3px;
 }
 #rightside{
-  font-family: 'Georgia', serif;
   float: right;
-  background-color: #FAEBD7;
-  border-style: solid;
-  border-color: black;
-  padding: 10px;
-  padding-bottom: 50px;
-  width: 135px;
 }
+
 #bar{
   text-align: center;
-}
-#btn{
-  margin-left: 30%;
 }
 
 #functDisplay {
   text-align: center;
 }
 
-#crt {
-  margin-left: 30%;
-}
 
 #container {
   border-color: black;
+}
+
+#leftside{
+  float: left;
+  padding: 0;
+}
+
+.sideBars {
+  font-family: 'Georgia', serif;
+  background-color: #FAEBD7;
+  border-style: double;
+  border-color: black;
+  padding: 10px;
+  padding-bottom: 50px;
+  width: 135px;
+  text-align: center;
+}
+
+#leftside h5{
+  margin: 3px 7px;
+
 }
