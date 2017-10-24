@@ -2,6 +2,8 @@
 <!-- Add CSS for combining it all -->
 
 
+<!-- https://stackoverflow.com/questions/13152578/create-a-draggable-div-in-native-javascript -->
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -23,12 +25,18 @@
       <button type="button" name="button" id="btn">Submit</button>
       <p id = "functDisplay"></p>
       <button type="button" name="button" id = "crt">Create</button>
+      <div id="textboxes"></div>
+      <button type="button" name="button" id = "crtSub">Create Sub Functions </button>
+      <button type="button" name="button" id = 'clear'>Clear</button>
     </aside>
   </body>
   <script>
 
   //Probalby want to make the dataset an Array of Dicts
-  functionSet = [];
+  var functionSet = [];
+
+  var valuesNaught = 0;
+
 
   const width = 750,
         height = 450,
@@ -47,7 +55,10 @@
       .style("overflow", "visible");
 
 
-
+  document.getElementById('clear').addEventListener('click', function(){
+    svg.selectAll('circle')
+      .remove();
+  })
 
 
   document.getElementById('bar').addEventListener("click", function(){
@@ -57,6 +68,13 @@
     var x = document.getElementById('bar').value;
     if (x != "Number of Inputs" && !isNaN(x) && x < 26){
       document.getElementById('functDisplay').innerHTML = ("F(" + createTextofFucntion(x) +")")
+      valuesNaught = x;
+      for (var i = 0; i < valuesNaught; i++) {
+        var abc = "xyzwvutsrqponmlkjihgfedcba";
+        var x = document.createElement("input");
+        x.value = abc.charAt(i)+ " = ";
+        document.getElementById('textboxes').appendChild(x)
+      }
     }
     if (isNaN(x)){
       document.getElementById('bar').value = "Please put in a number"
@@ -67,8 +85,10 @@
   });
 
   document.getElementById('crt').addEventListener('click', function(){
-    bindSzn();
+    createFunction();
   })
+
+  //document.getElementById('crtSub').addEventListener('')
   function createTextofFucntion(n){
     var abc = "yzwvutsrqponmlkjihgfedcba";
     var inputFun = "x";
@@ -80,7 +100,7 @@
     return (inputFun)
 
   }
-  function bindSzn(){
+  function createFunction(){
     svg.selectAll("circle")
       .data(functionSet)
       .enter()
@@ -89,15 +109,13 @@
       .attr('r', "25")
       .attr("cx", "100")
       .attr("cy", "100")
-      .text()
     console.log(3)
     console.log(JSON.stringify(functionSet))
   }
 
+  function createPath(){
 
-
-
-
+  }
 
 
   </script>
