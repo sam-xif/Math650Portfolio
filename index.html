@@ -68,10 +68,9 @@
             if (dragObj == null)
                 return;
 
-            dragObj.attr("cx", x).attr("cy", y);
+            dragObj.attr("transform", "translate(" + x + "," + y + ")");
 
         });
-      //.style("position", "relative");
 
 
   document.getElementById('clear').addEventListener('click', function(){
@@ -86,7 +85,7 @@
   document.getElementById('btn').addEventListener("click", function(){
     var x = document.getElementById('bar').value;
     if (x != "Number of Inputs" && !isNaN(x) && x < 26){
-      document.getElementById('functDisplay').innerHTML = ("F(" + createTextofFucntion(x) +")")
+      document.getElementById('functDisplay').innerHTML = (createTextofFucntion(x))
       valuesNaught = x;
       for (var i = 0; i < valuesNaught; i++) {
         var abc = "xyzwvutsrqponmlkjihgfedcba";
@@ -103,17 +102,18 @@
     }
   });
 
+
   document.getElementById('crt').addEventListener('click', function(){
     createFunction();
   })
 
-  //document.getElementById('crtSub').addEventListener('')
   function createTextofFucntion(n){
     var abc = "yzwvutsrqponmlkjihgfedcba";
     var inputFun = "x";
     for (var i = 0; i < n - 1; i++) {
       inputFun = inputFun + ", " + abc.charAt(i);
     }
+    inputFun = "F(" + inputFun + ")";
     console.log(inputFun);
     functionSet.push(inputFun)
     return (inputFun)
@@ -121,24 +121,31 @@
   }
 
   function createFunction(){
-      svg.selectAll("circle")
+      var group = svg.selectAll("g")
         .data(functionSet)
         .enter()
-        .append("circle")
-        .style('fill', "red")
-        .attr('r', "25")
-        .attr("cx", 100)
-        .attr("cy", 100)
-        //.style("position", "absolute")
+        .append("g")
+        .attr("transform", "translate(" + 100 + "," + 100 + ")")
         .on("mousedown", function (d) {
             dragObj = d3.select(this);
+        });
+      group.append("circle")
+        .style('fill', "#e0e0e0")
+        .attr('r', 40)
+        .attr("cx", 0)
+        .attr("cy", 0)
+      group.append("text")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("text-anchor", "middle")
+        .html(function (d) {
+            return d;
         });
     console.log(3)
     console.log(JSON.stringify(functionSet))
   }
 
   function createPath(){
-
   }
 
 
