@@ -24,9 +24,9 @@
       <input input="text" value= "Number of Inputs" id ="bar"> <br>
       <button type="button" name="button" id="btn">Submit</button>
       <p id = "functDisplay"></p>
-      <button type="button" name="button" id = "crt">Create</button>
       <div id="textboxes"></div>
       <button type="button" name="button" id = "crtSub">Create Sub Functions </button>
+      <button type="button" name="button" id = "crt">Create</button>
       <button type="button" name="button" id = 'clear'>Clear</button>
     </aside>
   </body>
@@ -58,13 +58,13 @@
           dragObj = null;
       })
         .on("mousemove", function (d) {
-            console.log(svg.node().clientX);
+          //  console.log(svg.node().clientX);
             var coordinates = [0, 0];
             coordinates = d3.mouse(this);
             var x = coordinates[0];
             var y = coordinates[1];
 
-            console.log(x + "," + y);
+          //  console.log(x + "," + y);
             if (dragObj == null)
                 return;
 
@@ -79,6 +79,16 @@
   })
 
 
+  document.getElementById('crtSub').addEventListener('click', function(){
+    var set = document.getElementsByClassName('subFunction');
+    for (var i = 0; i < set.length; i++) {
+      console.log(set[i].value)
+      functionSet.push(set[i].value)
+    }
+    console.log(JSON.stringify(functionSet))
+
+
+  })
   document.getElementById('bar').addEventListener("click", function(){
     document.getElementById('bar').value = "";
   });
@@ -90,6 +100,7 @@
       for (var i = 0; i < valuesNaught; i++) {
         var abc = "xyzwvutsrqponmlkjihgfedcba";
         var x = document.createElement("input");
+        x.classList.add("subFunction");
         x.value = abc.charAt(i)+ " = ";
         document.getElementById('textboxes').appendChild(x)
       }
@@ -145,8 +156,6 @@
     console.log(JSON.stringify(functionSet))
   }
 
-  function createPath(){
-  }
 
 
   </script>

@@ -44,15 +44,4 @@ h3 {
 
 #container {
   border-color: black;
-  display: block;
-}
-
-#clear {
-  margin-left: 30%;
-  margin-top: 15px;
-}
-
-#crtSub {
-  text-align: center;
-  margin-left: 5%;
 }
