@@ -1,9 +1,6 @@
 /*https://stackoverflow.com/questions/3540194/how-to-make-a-grid-like-graph-paper-grid-with-just-css*/
 
 body {
-  height: 75px;
-  background-size: 40px 40px;
-  background-image: radial-gradient(circle, #000000 1px, rgba(0, 0, 0, 0) 1px);
 }
 header {
   margin: 0px auto;
@@ -23,6 +20,9 @@ h3 {
 
 #container {
   border-color: black;
+  
+  background-size: 40px 40px;
+  background-image: radial-gradient(circle, #000000 1px, rgba(0, 0, 0, 0) 1px);
 }
 
 #leftside{
@@ -44,6 +44,12 @@ h3 {
 #leftside h5{
   margin: 3px 7px;
 
+}
+
+
+svg {
+    border: 2px solid black;
+    overflow: hidden;
 }
 
 svg text {
