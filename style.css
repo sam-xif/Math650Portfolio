@@ -1,11 +1,11 @@
 /*https://stackoverflow.com/questions/3540194/how-to-make-a-grid-like-graph-paper-grid-with-just-css*/
 
 body {
+    font-family: sans-serif;
 }
 header {
   margin: 0px auto;
   text-align: center;
-  font-family: 'Georgia', serif;
 
 }
 h1{
