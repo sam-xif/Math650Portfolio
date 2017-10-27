@@ -71,6 +71,7 @@ function getPathsToLeaf(leaf, tree) {
         while (path.length > 0 && path[path.length - 1].layer >= obj.layer) {
             path.pop();
         }
+
         path.push(obj);
         if (obj.node.data == leaf.data) {
             var pathArr = [];
@@ -86,8 +87,48 @@ function getPathsToLeaf(leaf, tree) {
     return paths;
 }
 
-function convertPathToDerivative(path) {
+// Converts a path to LaTeX
+function convertPathsToDerivative(paths, partial) {
+    // $$\nabla F(x,y) = \Big \langle \frac{\partial F}{\partial x}, \frac{\partial F}{\partial y} \Big \rangle$$
+    var strings = [];
+    if (partial) {
+        paths.forEach(function (path) {
+            for (var i = 0; i < path.length - 1; i++) {
+                strings.push("\\frac{\\partial " + path[i].data + "}{\\partial " + path[i + 1].data + "} ");
+            }
+            strings.push("+ ");
+        });
+    }
+    else {
+        // For derivatives of one variable
+    }
+    var string = "";
+    for (var i = 0; i < strings.length - 1; i++) {
+        string += strings[i];
+    }
+    return string;
+}
 
+function generateFullExpression(tree) {
+    var leaves = getLeaves(tree);
+    var paths = [];
+
+    leaves.forEach(function (d) {
+        paths.push(getPathsToLeaf(d, tree));
+    });
+
+    var derivatives = [];
+    paths.forEach(function (d) {
+        derivatives.push(convertPathsToDerivative(d, true));
+        derivatives.push(", ");
+    });
+
+    var string = "";
+    for (var i = 0; i < derivatives.length - 1; i++) {
+        string += derivatives[i];
+    }
+
+    return "\\nabla F = \\Big \\langle " + string + " \\Big \\rangle";
 }
 
 function test() {
@@ -98,48 +139,19 @@ function test() {
     var ynode = createNode("y");
     var snode = createNode("s");
     var tnode = createNode("t");
+    var unode = createNode("u");
 
     xnode.children.push(snode);
     xnode.children.push(tnode);
     ynode.children.push(snode);
     ynode.children.push(tnode);
 
+    snode.children.push(unode);
+
     root.children.push(xnode);
     root.children.push(ynode);
 
-    console.log(root);
-
-    var leaves = getLeaves(root);
-    console.log(getPathsToLeaf(leaves[1], root));
+    d3.select("#derivative").html("$$" + generateFullExpression(root) + "$$");
 }
 
 test();
-
-/*
-if (obj.node.data == leaf.data) {
-    var counter_tmp = 0;
-    var cleanedPath = [];
-    for (var i = 0; i < path.length; i++) {
-        if (counter_tmp == path[i].layer) {
-            cleanedPath.push(path[i]);
-            counter_tmp++;
-        }
-        else {
-            var oldNode = cleanedPath.pop();
-            counter_tmp = oldNode.layer;
-            if (oldNode.layer == path[i].layer) {
-                cleanedPath.push(path[i]);
-                counter_tmp++;
-            }
-        }
-    }
-    paths.push(cleanedPath);
-    for (var i = 0; i < path.length; i++) {
-        if (path[i].layer > )
-        path.splice(, 1);
-    }
-
-    path = [];
-    counter_tmp = 0;
-}
-*/
