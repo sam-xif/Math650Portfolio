@@ -5,7 +5,6 @@
 <!-- 1. Make it one input function bar 2. Add levels 3. figure out how to get rid
 of the extra input bars 4.-->
 
-
 <!-- https://stackoverflow.com/questions/13152578/create-a-draggable-div-in-native-javascript -->
 
 <!DOCTYPE html>
@@ -38,19 +37,17 @@ of the extra input bars 4.-->
       <div id="derivative">
           $$\nabla F(x,y) = \Big \langle \frac{\partial F}{\partial x}, \frac{\partial F}{\partial y} \Big \rangle$$
       </div>
-    <div id = "container"><div>
+      <div id = "container">
     <div class = "sideBars" id = "leftside">
       <h5>Functions:</h5>
     </div>
     <aside class = "sideBars" id="rightside">
-      <input input="text" value= "Number of Inputs" id ="bar"> <br>
-      <button type="button" name="button" id="btn">Create Father Function</button>
-      <p id = "functDisplay"></p>
-      <div id="textboxes"></div>
-      <button type="button" name="button" id = "crtSub">Create Sub Functions </button>
-      <button type="button" name="button" id = "crt">Create Nodes</button> <br>
-      <button type="button" name="button" id = 'clear'>Clear</button>
+      <input type="text" name="VarCreate" value="Type a Function" id = "masterInput"><br>
+      <input type="text" name="VarIdentifier" value="Define the Variables" id = 'masterVar'><br>
+      <button type="button" name="button" id = "masterCreate">Create</button> <br>
+      <button type="button" name="button" id = 'clear'>Clear</button><br>
     </aside>
+    </div>
   </body>
   <script>
 
@@ -175,93 +172,81 @@ of the extra input bars 4.-->
       .remove();
     svg.selectAll('text')
       .remove()
-
-      d3.selectAll(".subFunction").remove();
-      d3.selectAll(".listFunction").remove();
+    d3.selectAll(".subFunction").remove();
+    d3.selectAll(".listFunction").remove();
     document.getElementById('functDisplay').innerHTML = '';
     document.getElementById('bar').value = 'Number of Inputs';
 
   })
 
-
-  document.getElementById('crtSub').addEventListener('click', function(){
-    var set = document.getElementsByClassName('subFunction');
-    for (var i = 0; i < set.length; i++) {
-      functionSet.push([set[i].value, 1])
-      document.getElementById('leftside').appendChild(list(set[i].value));
-    }
+  document.getElementById('masterInput').addEventListener('click', function(){
+    document.getElementById('masterInput').value = "";
   })
-  document.getElementById('bar').addEventListener("click", function(){
-    document.getElementById('bar').value = "";
-  });
-  document.getElementById('btn').addEventListener("click", function(){
-    var x = document.getElementById('bar').value;
-    if (x != "Number of Inputs" && !isNaN(x) && x < 26){
-      document.getElementById('functDisplay').innerHTML = (createTextofFucntion(x,0, true))
-      valuesNaught = x;
-      for (var i = 0; i < valuesNaught; i++) {
-        var abc = "xyzwvutsrqponmlkjihgfedcba";
-        var y = document.createElement("input");
-        y.classList.add("subFunction");
-        y.value = abc.charAt(i)+ " = ";
-        document.getElementById('textboxes').appendChild(y)
-      }
-      console.log(createTextofFucntion(x,0))
-      document.getElementById('leftside').appendChild(list(createTextofFucntion(x,0, false)));
-    }
-    if (isNaN(x)){
-      document.getElementById('bar').value = "Please put in a number"
-    }
-    if (x > 26){
-      document.getElementById('bar').value = "Pick a Lower Number"
-    }
-  });
-
-// Creates all Functions
-  document.getElementById('crt').addEventListener('click', function(){
+  document.getElementById('masterVar').addEventListener('click', function(){
+    document.getElementById('masterVar').value = "";
+  })
+  document.getElementById('masterCreate').addEventListener('click', function(){
+    logText('masterInput', 'masterVar',true);
     createFunction();
+    listFunct(false);
+    console.log(JSON.stringify(functionSet))
   })
 
-  function list(n){
+  function listFunct(returnFunct){
     var x = document.createElement('p');
-    x.innerHTML = ''+n;
+    var y = document.getElementById('masterInput').value;
+    if (y === "Type a Function"){
+      return;
+    }
+    x.innerHTML = y;
     x.style.margin = 0;
     x.className = "listFunction"
-    return x;
+    document.getElementById('leftside').appendChild(x)
+    document.getElementById('masterInput').value = "Type a Function";
+    document.getElementById('masterVar').value = 'Define the Variables';
+    if (returnFunct){
+      return x;
+    }
   }
 
-// Creates the top Function.
-  function createTextofFucntion(n, level, doPush){
-    var abc = "yzwvutsrqponmlkjihgfedcba";
-    var inputFun = "x";
-    for (var i = 0; i < n - 1; i++) {
-      inputFun = inputFun + ", " + abc.charAt(i);
-    }
-    inputFun = "F(" + inputFun + ")";
-    var temp = [inputFun, level];
-    if (doPush){
-      functionSet.push(temp)
-    }
-    return (inputFun)
 
+// Logs data. Sets up 2 different points for each data point
+  function logText(id1, id2, doPush){
+    var text = document.getElementById(id1).value;
+    var vars =  document.getElementById(id2).value;
+    var varSet = vars.split(',');
+
+    if (text === "Type a Function"){
+      return null;
+    }
+    if (doPush){
+      var datum = [];
+      datum.push(text)
+      datum.push(varSet)
+      functionSet.push(datum)
+      console.log(JSON.stringify(functionSet))
+    }
+    else {
+      return (text)
+    }
   }
 
   function createFunction() {
       // Number of circles
-      var matrix_size = functionSet.length;
-      for (var i = 0; i < matrix_size; i++) {
-          var subArray = []
-          for (var j = 0; j < matrix_size; j++) {
-              subArray.push(0);
-          }
-          adjacencyMatrix.push(subArray);
-      }
+      // var matrix_size = functionSet.length;
+      // for (var i = 0; i < matrix_size; i++) {
+      //     var subArray = []
+      //     for (var j = 0; j < matrix_size; j++) {
+      //         subArray.push(0);
+      //     }
+      //     adjacencyMatrix.push(subArray);
+      // }
 
       var group = circles.selectAll("g")
         .data(functionSet)
         .enter()
         .append("g")
-        .attr("transform", "translate(" + 100 + "," + 100 + ")")
+        .attr("transform", "translate(" + width/2 + "," + height/8 + ")")
         .attr("ix", 100)
         .attr("iy", 100)
         .on("mousedown", function (d) {
@@ -292,7 +277,7 @@ of the extra input bars 4.-->
 
                 lineSrc = elem;
             }
-               
+
         });
       group.append("circle")
         .style('fill', "#e0e0e0")
@@ -301,9 +286,9 @@ of the extra input bars 4.-->
         .attr("cy", 0)
       group.append("text")
         .attr("x", 0)
-        .attr("y", -20)
+        .attr("y", -10)
         .attr("text-anchor", "middle")
-        .html(function (d) {
+        .text(function (d) {
             return d[0];
         });
   }

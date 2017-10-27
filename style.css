@@ -21,17 +21,6 @@ h3 {
   float: right;
 }
 
-#btn{
-  font-size: 10px;
-}
-#bar {
-  text-align: center;
-}
-#functDisplay {
-  text-align: center;
-}
-
-
 #container {
   border-color: black;
 }
@@ -47,7 +36,7 @@ h3 {
   border-style: double;
   border-color: black;
   padding: 10px;
-  padding-bottom: 50px;
+  padding-bottom: 15px;
   width: 135px;
   text-align: center;
 }
@@ -63,4 +52,18 @@ cursor: default;
 -moz-user-select: none;
 -ms-user-select: none;
 user-select: none;
+}
+
+#masterInput {
+  text-align: center;
+}
+
+#masterCreate {
+  margin-top: 9px;
+  margin-bottom: 9px;
+}
+
+#masterVar{
+  margin-top: 9px;
+  text-align: center;
 }
