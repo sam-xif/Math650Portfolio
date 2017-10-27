@@ -134,7 +134,7 @@ function generateFullExpression(tree) {
 function test() {
     var root = createEmptyTree();
     root.data = "F";
-    
+
     var xnode = createNode("x");
     var ynode = createNode("y");
     var snode = createNode("s");
