@@ -1,4 +1,4 @@
-<!-- Add algorithm. Make function creation better -->
+﻿<!-- Add algorithm. Make function creation better -->
 <!-- Add CSS for combining it all -->
 
 
@@ -108,6 +108,8 @@ of the extra input bars 4.-->
                         console.log("EQUAL");
                     }
                 });
+
+              if (minDistance == null) line.remove();
 
               console.log(minDistance);
               // If line is not targetted or target and source are already connected, remove
@@ -249,8 +251,8 @@ of the extra input bars 4.-->
         .enter()
         .append("g")
         .attr("transform", "translate(" + width/2 + "," + height/8 + ")")
-        .attr("ix", 100)
-        .attr("iy", 100)
+        .attr("ix", width / 2)
+        .attr("iy", height / 8)
         .on("mousedown", function (d) {
             if (d3.event.button == 0) {
                 line = null;
