@@ -62,7 +62,7 @@ of the extra input bars 4.-->
   var lineSrc = null;
       var line = null;
       var lines = [];
-      var defaultRadius = 15;
+      var defaultRadius = 40;
 
       var adjacencyMatrix = [];
 
@@ -193,7 +193,6 @@ of the extra input bars 4.-->
     logText('masterInput', 'masterVar',true);
     createFunction();
     listFunct(false);
-    console.log(JSON.stringify(functionSet))
   })
 
   function listFunct(returnFunct){
@@ -215,6 +214,8 @@ of the extra input bars 4.-->
 
 
 // Logs data. Sets up 2 different points for each data point
+
+// Adds parent and children to Datum when
   function logText(id1, id2, doPush){
     var text = document.getElementById(id1).value;
     var vars =  document.getElementById(id2).value;
@@ -236,16 +237,6 @@ of the extra input bars 4.-->
   }
 
   function createFunction() {
-      // Number of circles
-      // var matrix_size = functionSet.length;
-      // for (var i = 0; i < matrix_size; i++) {
-      //     var subArray = []
-      //     for (var j = 0; j < matrix_size; j++) {
-      //         subArray.push(0);
-      //     }
-      //     adjacencyMatrix.push(subArray);
-      // }
-
       var group = circles.selectAll("g")
         .data(functionSet)
         .enter()
@@ -278,7 +269,6 @@ of the extra input bars 4.-->
                     .attr("stroke-width", 4)
                     .attr("stroke", "black");
                 //.classed("line-draggable", true);
-
                 lineSrc = elem;
             }
 
