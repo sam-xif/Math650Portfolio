@@ -17,13 +17,21 @@ function createNode(data) {
         isRoot: false,
         parent: null,
         children: [],
-        data: data
+        data: data,
+        layer: null
     }
 }
 
 function addChild(node, parent) {
+    console.log("TEST");
+    if (node.layer != null && parent.layer > node.layer) {
+        return false;
+    }
+
     parent.children.push(node);
     node.parent = parent;
+    node.layer = node.parent.layer + 1;
+    return true;
 }
 
 function generateAdjacencyMatrix() {

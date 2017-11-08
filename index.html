@@ -71,7 +71,7 @@ of the extra input bars 4.-->
     var functionSet = [];
     var valuesNaught = 0;
 
-    var functionTree = null;
+    var functionTree = [];
 
     var dragObj = null;
 
@@ -136,11 +136,28 @@ of the extra input bars 4.-->
                 });
                 console.log(hasParent);
 
+
+
                 // If line is not targetted or target and source are already connected, remove
                 if (hasParent || target == null || minDistance > defaultRadius) {
                     line.remove();
                 }
                 else {
+                    var srcDatum = lineSrc.datum();
+                    var targetDatum = target.datum();
+                    var result = addChild(targetDatum, srcDatum);
+                    if (!result) {
+                        console.log("ERR");
+                        line.remove();
+                        return;
+                    }
+
+                    console.log(srcDatum);
+                    console.log(targetDatum);
+
+                    lineSrc.datum(srcDatum);
+                    target.datum(targetDatum);
+
                     line.select("line").attr("x2", target.attr("ix"))
                       .attr("y2", target.attr("iy"));
                     var x1 = line.select("line").attr("x1");
@@ -263,8 +280,10 @@ of the extra input bars 4.-->
             var datum = [];
             datum.push(text)
             datum.push(varSet)
-            functionSet.push(datum)
-            console.log(JSON.stringify(functionSet))
+            node = createNode(datum);
+            node.layer = 0;
+            functionSet.push(node)
+            //console.log(JSON.stringify(functionSet))
         }
         else {
             return (text)
@@ -303,7 +322,7 @@ of the extra input bars 4.-->
                       .attr("x2", x)
                       .attr("y1", elem.attr("iy"))
                       .attr("y2", y)
-                      .attr("stroke-width", 4)
+                      .attr("stroke-width", 2)
                       .attr("stroke", "black");
 
                  var triangle = line.append("polygon")
@@ -325,7 +344,7 @@ of the extra input bars 4.-->
           .attr("y", -10)
           .attr("text-anchor", "middle")
           .text(function (d) {
-              return d[0];
+              return d.data[0];
           });
     }
 
