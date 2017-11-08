@@ -1,56 +1,46 @@
 /*https://stackoverflow.com/questions/3540194/how-to-make-a-grid-like-graph-paper-grid-with-just-css*/
-
+html {
+  height: 100%;
+}
 body {
-    font-family: serif;
-    /*background-size: 40px 40px;
-    background-image: radial-gradient(circle, #000000 1px, rgba(0, 0, 0, 0) 1px);
-*/}
+    font-family: sans-serif;
+    height: 100%;
+    margin: 0;
+  }
 header {
-  margin: 0px auto;
-  text-align: center;
+  text-align: left;
+  float: left;
+  width: 100%;
+  background-color: Gainsboro;
+}
 
+#subHeader {
+ width: 50%;
+ display: inline-block;
 }
 h1{
-  margin-bottom: 5px;
+  margin: 0px;
+  width: 100%;
 }
-h3 {
-  margin-top: 3px;
+h3{
+  margin: 0px;
+  width: 100%;
 }
-#rightside{
-  float: right;
-}
-
 #container {
-  border-color: black;
-
-
-}
-
-#leftside{
-  float: left;
-  padding: 0;
-}
-
-.sideBars {
-  font-family: 'Georgia', serif;
-  background-color: #FAEBD7;
-  border-style: double;
-  border-color: black;
-  padding: 10px;
-  padding-bottom: 15px;
-  width: 135px;
-  text-align: center;
-}
-
-#leftside h5{
-  margin: 3px 7px;
-
+  width: 77%;
+  height: 100%;
+  display: inline-block;
+  float:right;
 }
 
 
 svg {
-    border: 2px solid black;
     overflow: hidden;
+    display: inline;
+    margin: 100px 0px;
+    width: 100%;
+    float: right;
+    height: 100%;
 }
 
 svg text {
@@ -60,17 +50,54 @@ cursor: default;
 -ms-user-select: none;
 user-select: none;
 }
+#table {
+  text-align: left;
+  overflow: scroll;
+  width: 23%;
+  height: 100%;
+  float:left;
+  display: inline-block;
+  border-collapse: collapse;
+  border-right: 15px solid gray;
+  border-top: none;
+  box-sizing: border-box;
 
-#masterInput {
-  text-align: center;
 }
 
-#masterCreate {
-  margin-top: 9px;
-  margin-bottom: 9px;
+#body-content{
+  clear:both;
+  border-top: 1px solid black;
+  height: 100%;
 }
 
-#masterVar{
-  margin-top: 9px;
-  text-align: center;
+tr {
+  border: 1px solid black;
+}
+
+td {
+  height: 50px;
+}
+
+#table input {
+  border: none;
+  padding-left: 15px;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: none;
+  background-color: rgba(0, 0, 255, 0.1);
+}
+
+#derivative {
+  float: right;
+  margin: 0;
+  width: 35%;
+  display: inline-block;
+}
+
+.var {
+  border: 1px solid black;
 }

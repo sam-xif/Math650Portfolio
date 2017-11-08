@@ -29,25 +29,28 @@ of the extra input bars 4.-->
   </head>
   <body>
     <header>
+      <div id = "subHeader">
         <h1>
           Multivariate Chain Rule
         </h1>
         <h3>By Sam Xifaras and Malcolm Essaid</h3>
+        </div>
+        <div id="derivative">
+            $$\nabla F(x,y) = \Big \langle \frac{\partial F}{\partial x}, \frac{\partial F}{\partial y} \Big \rangle$$
+        </div>
+
     </header>
-      <div id="derivative">
-          $$\nabla F(x,y) = \Big \langle \frac{\partial F}{\partial x}, \frac{\partial F}{\partial y} \Big \rangle$$
-      </div>
+
+      <div id="body-content">
+      <table id = "table">
+         <tr>
+           <th>Variable:</th>
+           <th>Function:</th>
+         </tr>
+      </table>
       <div id = "container">
-    <div class = "sideBars" id = "leftside">
-      <h5>Functions:</h5>
     </div>
-    <aside class = "sideBars" id="rightside">
-      <input type="text" name="VarCreate" value="Type a Function" id = "masterInput"><br>
-      <input type="text" name="VarIdentifier" value="Define the Variables" id = 'masterVar'><br>
-      <button type="button" name="button" id = "masterCreate">Create</button> <br>
-      <button type="button" name="button" id = 'clear'>Clear</button><br>
-    </aside>
-    </div>
+  </div>
 
     <script src="mathhelper.js"></script>
   </body>
@@ -66,18 +69,86 @@ of the extra input bars 4.-->
 
       var adjacencyMatrix = [];
 
-  const width = 750,
-        height = 400,
-        margin = {
-            top: 10,
-            bottom: 100,
-            left: 100,
-            right: 10,
-        };
+  function createTable(n){
+    for (var i = 0; i < n; i++) {
+      var temp1 = document.createElement('tr');
+      var temp2 = document.createElement('td');
+      var temp3 = document.createElement('td');
+      var temp4 = document.createElement('input');
+      temp4.type = 'text';
+      temp4.placeholder = 'x';
+
+      var temp5 = document.createElement('input');
+      temp5.type = 'text';
+      temp5.placeholder = 'F(x)';
+
+      temp2.className = 'var';
+      temp2.id = 'var' + i;
+
+      temp3.className = 'fun';
+      temp3.id = 'fun' + i;
+
+      temp2.appendChild(temp4);
+      temp3.appendChild(temp5);
+      temp1.appendChild(temp2);
+      temp1.appendChild(temp3);
+
+      document.getElementById('table').appendChild(temp1);
+    }
+  }
+
+  function addEventToVar(){
+    var varSet = document.getElementsByClassName('var');
+    for (var i = 0; i < varSet.length; i++) {
+      varSet[i].addEventListener('keyup', function(){
+        var val = d3.select(this).attr('id').substring(3);
+        logText(('fun'+val), ('var'+val), true, val);
+        createFunction();
+        this.removeEventListener('keyup', arguments.callee);
+      })
+    }
+  }
+  function addSecondEventToVar(){
+    var varSet = document.getElementsByClassName('var');
+    for (var i = 0; i < varSet.length; i++) {
+      varSet[i].addEventListener('keyup', function(){
+          var val = d3.select(this).attr('id').substring(3);
+        updateVarOfFunction(logText(('fun' + val),('var'+val), false, val, true), val);
+      })
+    }
+  }
+  function addEventToFun() {
+    var funSet = document.getElementsByClassName('fun');
+    for (var i = 0; i < funSet.length; i++) {
+      funSet[i].addEventListener('keyup', function(){
+        var val = d3.select(this).attr('id').substring(3);
+       updateTextOfFunction(logText(('fun' + val),('var'+val), false, val, false), val);
+      })
+    }
+  }
+  function updateVarOfFunction(variable, val) {
+    functionSet[val][1] = variable;
+    console.log(JSON.stringify(functionSet))
+
+  }
+  function updateTextOfFunction(text, val) {
+
+    functionSet[val][0] = text;
+    console.log(JSON.stringify(functionSet))
+    circles.selectAll('g')
+      .data(functionSet)
+      .select("text")
+      .text(function (d) {
+          return d[0];
+      });
+
+
+    // var index = functionSet.findIndex(function(d) {return d[2] === val)
+
+  }
 
   var svg = d3.select("#container").append("svg")
-      .attr("width", width)
-      .attr("height", height)
+      .attr("height", '100%')
       .style("margin", "0 auto")
       .style("display", "block")
       .style("overflow", "visible")
@@ -168,57 +239,17 @@ of the extra input bars 4.-->
           d3.event.preventDefault();
       });
 
+
+
+
   var circles = svg.append("g");
   var linesg = svg.append("g");
 
-  document.getElementById('clear').addEventListener('click', function(){
-    svg.selectAll('circle')
-      .remove();
-    svg.selectAll('text')
-      .remove()
-    d3.selectAll(".subFunction").remove();
-    d3.selectAll(".listFunction").remove();
-    document.getElementById('functDisplay').innerHTML = '';
-    document.getElementById('bar').value = 'Number of Inputs';
-
-  })
-
-  document.getElementById('masterInput').addEventListener('click', function(){
-    document.getElementById('masterInput').value = "";
-  })
-  document.getElementById('masterVar').addEventListener('click', function(){
-    document.getElementById('masterVar').value = "";
-  })
-  document.getElementById('masterCreate').addEventListener('click', function(){
-    logText('masterInput', 'masterVar',true);
-    createFunction();
-    listFunct(false);
-  })
-
-  function listFunct(returnFunct){
-    var x = document.createElement('p');
-    var y = document.getElementById('masterInput').value;
-    if (y === "Type a Function"){
-      return;
-    }
-    x.innerHTML = y;
-    x.style.margin = 0;
-    x.className = "listFunction"
-    document.getElementById('leftside').appendChild(x)
-    document.getElementById('masterInput').value = "Type a Function";
-    document.getElementById('masterVar').value = 'Define the Variables';
-    if (returnFunct){
-      return x;
-    }
-  }
-
-
-// Logs data. Sets up 2 different points for each data point
 
 // Adds parent and children to Datum when
-  function logText(id1, id2, doPush){
-    var text = document.getElementById(id1).value;
-    var vars =  document.getElementById(id2).value;
+  function logText(id1, id2, doPush, index, varBoolean){
+    var text = document.getElementById(id1).children[0].value;
+    var vars =  document.getElementById(id2).children[0].value;
     var varSet = vars.split(',');
 
     if (text === "Type a Function"){
@@ -228,8 +259,12 @@ of the extra input bars 4.-->
       var datum = [];
       datum.push(text)
       datum.push(varSet)
+      datum.push(index)
       functionSet.push(datum)
-      console.log(JSON.stringify(functionSet))
+      //console.log(JSON.stringify(functionSet))
+    }
+    if (varBoolean){
+      return varSet
     }
     else {
       return (text)
@@ -237,11 +272,15 @@ of the extra input bars 4.-->
   }
 
   function createFunction() {
+
+    // Need to create definite height/width
+    var width = document.getElementById('container').width;
+    var height = document.getElementById('container').height;
       var group = circles.selectAll("g")
         .data(functionSet)
         .enter()
         .append("g")
-        .attr("transform", "translate(" + width/2 + "," + height/8 + ")")
+        .attr("transform", "translate(" + 100/2 + "," + 800/8 + ")")
         .attr("ix", width / 2)
         .attr("iy", height / 8)
         .on("mousedown", function (d) {
@@ -278,6 +317,7 @@ of the extra input bars 4.-->
         .attr('r', defaultRadius)
         .attr("cx", 0)
         .attr("cy", 0)
+        .attr('id', function(d, i){return 'p' + d[2]})
       group.append("text")
         .attr("x", 0)
         .attr("y", -10)
@@ -285,7 +325,13 @@ of the extra input bars 4.-->
         .text(function (d) {
             return d[0];
         });
+
+
   }
+  createTable(12);
+  addEventToVar();
+  addEventToFun();
+  addSecondEventToVar();
 
   </script>
 
