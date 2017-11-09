@@ -1,6 +1,14 @@
-/*https://stackoverflow.com/questions/3540194/how-to-make-a-grid-like-graph-paper-grid-with-just-css*/
 html {
   height: 100%;
+}
+#clr{
+background-color: #555555;
+cursor: pointer;
+border: none;
+padding: 15px 32px;
+font-size:16px;
+color: white;
+margin-bottom: 15px;
 }
 body {
     font-family: sans-serif;
@@ -33,7 +41,6 @@ h3{
   float:right;
 }
 
-
 svg {
     overflow: hidden;
     display: inline;
@@ -52,7 +59,7 @@ user-select: none;
 }
 
 #tablecontainer {
-    width:23%;
+    width:11.5%;
     float:left;
 }
 

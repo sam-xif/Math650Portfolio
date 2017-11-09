@@ -1,10 +1,3 @@
-﻿<!-- Add algorithm. Make function creation better -->
-<!-- Add CSS for combining it all -->
-
-
-<!-- 1. Make it one input function bar 2. Add levels 3. figure out how to get rid
-of the extra input bars 4.-->
-
 <!-- https://stackoverflow.com/questions/13152578/create-a-draggable-div-in-native-javascript -->
 
 <!DOCTYPE html>
@@ -35,10 +28,10 @@ of the extra input bars 4.-->
         </h1>
         <h3>By Sam Xifaras and Malcolm Essaid</h3>
         </div>
+        <button type="clear" name="button" id='clr'>Clear</button>
         <div id="derivative">
             $$\nabla F = $$
         </div>
-
     </header>
 
       <div id="body-content">
@@ -68,7 +61,7 @@ of the extra input bars 4.-->
         var Ax = (r / (2 * Math.sqrt(1 + Math.pow(m, 2)))) + D[0];
         var negAx = (-r / (2 * Math.sqrt(1 + Math.pow(m, 2)))) + D[0];
         var Ay = function (x) { return m * (x - D[0]) + D[1]; };
-        
+
         var points = [[x1, y1], [Ax, Ay(Ax)], [negAx, Ay(negAx)]];
 
         return points[0][0] + "," + points[0][1] + " " + points[1][0] + "," + points[1][1] + " " + points[2][0] + "," + points[2][1];
@@ -93,7 +86,6 @@ of the extra input bars 4.-->
     var functionTree = [];
 
     function createTable(n) {
-        console.log("test");
     for (var i = 0; i < n; i++) {
       var temp1 = document.createElement('tr');
       var temp3 = document.createElement('td');
@@ -111,42 +103,22 @@ of the extra input bars 4.-->
     }
   }
 
-    function addEventToVar() {
-        /*
-    var varSet = document.getElementsByClassName('var');
-    for (var i = 0; i < varSet.length; i++) {
-      varSet[i].addEventListener('keyup', function(){
-        var val = d3.select(this).attr('id').substring(3);
-        logText(('fun'+val), ('var'+val), true, val);
-        createFunction();
-        this.removeEventListener('keyup', arguments.callee);
-      })
-    }*/
-  }
-  function addSecondEventToVar() {
-      /*
-    var varSet = document.getElementsByClassName('var');
-    for (var i = 0; i < varSet.length; i++) {
-      varSet[i].addEventListener('keyup', function(){
-          var val = d3.select(this).attr('id').substring(3);
-          var text = logText(('fun' + val),('var'+val), false, val, true);
-          if (!text) {
-              d3.select(this).style("background-color", "#ff7777");
-          }
-          else {
-              d3.select(this).style("background-color", "#4ef442");
-              updateVarOfFunction(text, val);
-              updateDerivative();
-          }
-      })
-    }*/
-  }
+  document.getElementById('clr').addEventListener('click', function(){
+    circles.selectAll('g').remove();
+    linesg.selectAll('g').remove();
+    lines = [];
+    functionSet = [];
+    var functions = document.getElementsByClassName('fun');
+    for (var i = 0; i < functions.length; i++) {
+      functions[i].children[0].value = '';
+    }
+
+  })
   function addEventToFun() {
     var funSet = document.getElementsByClassName('fun');
     for (var i = 0; i < funSet.length; i++) {
         funSet[i].addEventListener('keyup', function () {
             var val = d3.select(this).attr('id').substring(3);
-            console.log(!functionSet[val]);
         if (!functionSet[val]) {
             logText(('fun' + val), ('var' + val), true, val, false);
             createFunction();
@@ -166,11 +138,9 @@ of the extra input bars 4.-->
     }
   }
   function updateVarOfFunction(variable, val) {
-      console.log("VAL " + val);
     functionSet[val].data[1] = variable;
   }
   function updateTextOfFunction(text, val) {
-      console.log("VAL " + val);
     functionSet[val].data[0] = text;
     circles.selectAll('g')
       .data(functionSet)
@@ -178,14 +148,9 @@ of the extra input bars 4.-->
       .text(function (d) {
           return d.data[0];
       });
-
-
-    // var index = functionSet.findIndex(function(d) {return d[2] === val)
-
   }
 
     var dragObj = null;
-
     var lineSrc = null;
     var line = null;
     var lines = [];
@@ -221,9 +186,6 @@ of the extra input bars 4.-->
                 var c = circles.selectAll("g")
                   .each(function (d) {
                       var elem = d3.select(this);
-                      console.log("PROCESSING");
-
-                      console.log(elem.node() + "," + lineSrc.node());
                       if (!elem.node().isEqualNode(lineSrc.node())) {
                           var distance = Math.sqrt(Math.pow(x - elem.attr("ix"), 2) + Math.pow(y - elem.attr("iy"), 2));
                           if (minDistance == null || distance < minDistance) {
@@ -232,23 +194,10 @@ of the extra input bars 4.-->
                           }
                       }
                       else {
-                          console.log("EQUAL");
                       }
                   });
 
                 if (minDistance == null) line.remove();
-
-                console.log(lines);
-                /*
-                var hasParent = false;
-                lines.forEach(function (d) {
-                    if (d.target.node().isEqualNode(target.node())) {
-                        hasParent = true;
-                    }
-                });
-                console.log(hasParent);
-                */
-
 
                 // If line is not targetted or target and source are already connected, remove
                 if (/*hasParent || */target == null || minDistance > defaultRadius) {
@@ -259,7 +208,6 @@ of the extra input bars 4.-->
                     var targetDatum = target.datum();
                     var result = addChild(targetDatum, srcDatum);
                     if (!result) {
-                        console.log("ERR");
                         line.remove();
                         return;
                     }
@@ -353,6 +301,9 @@ of the extra input bars 4.-->
         }
     }
 
+    function clear() {
+
+    }
     // Logs data. Sets up 2 different points for each data point
 
     // Adds parent and children to Datum when
@@ -368,13 +319,11 @@ of the extra input bars 4.-->
             datum.push(index)
             var node = createNode(datum);
             functionSet.push(node)
-            //console.log(JSON.stringify(functionSet))
         }
 
         // Validate the variable string
         var valid = funcRE.test(text);
         if (!valid) {
-            console.log("INVALID");
             return valid;
         }
 
@@ -397,11 +346,8 @@ of the extra input bars 4.-->
             }
         })
         if (validTree) {
-            console.log("derivative");
             d3.select("#derivative").html("$$" + generateFullExpression(root, function (d) {
                 var match = funcRE.exec(d[0]);
-                console.log("MATCH");
-                console.log(match);
                 if (match[1] == null) {
                     return [match[0], match[0], match[0]];
                 }
@@ -421,7 +367,7 @@ of the extra input bars 4.-->
           .data(functionSet)
           .enter()
           .append("g")
-          .attr("transform", "translate(" + width / 2 + "," + height / 8 + ")")
+          .attr("transform", "translate(" + width/2  + "," + height /8+ ")")
           .attr("ix", width / 2)
           .attr("iy", height / 8)
           .on("mousedown", function (d) {
@@ -476,9 +422,7 @@ of the extra input bars 4.-->
         });
   }
   createTable(12);
-  addEventToVar();
   addEventToFun();
-  addSecondEventToVar();
 
       </script>
   </body>

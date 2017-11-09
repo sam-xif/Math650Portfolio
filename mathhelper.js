@@ -23,7 +23,6 @@ function createNode(data) {
 }
 
 function addChild(node, parent) {
-    console.log("TEST");
     if (node.layer != null && parent.layer > node.layer) {
         return false;
     }
@@ -71,7 +70,6 @@ function getPathsToLeaf(leaf, tree) {
     var path = [];
     var counter = 0;
     nodeStack.push({ layer: 0, node: tree });
-    console.log(path);
     while (nodeStack.length > 0) {
         var obj = nodeStack.pop();
 
@@ -97,12 +95,10 @@ function getPathsToLeaf(leaf, tree) {
 
 // Converts a path to LaTeX
 function convertPathsToDerivative(paths, partial, varNum, displayFunc) {
-    // $$\nabla F(x,y) = \Big \langle \frac{\partial F}{\partial x}, \frac{\partial F}{\partial y} \Big \rangle$$
     var strings = [];
     if (partial) {
         paths.forEach(function (path) {
             for (var i = 0; i < path.length - 1; i++) {
-                console.log(displayFunc(path[i].data));
                 strings.push("\\frac{\\partial (" + displayFunc(path[i].data)[2] + ")}{\\partial " + displayFunc(path[i + 1].data)[0] + "} ");
             }
             strings.push("+ ");
@@ -128,8 +124,6 @@ function generateFullExpression(tree, displayFunc) {
 
     var derivatives = [];
     var varNum = 0;
-    console.log("PATH");
-    console.log(paths);
     paths.forEach(function (d) {
         derivatives.push(convertPathsToDerivative(d, true, varNum, displayFunc));
         derivatives.push(", ");
