@@ -84,11 +84,11 @@ of the extra input bars 4.-->
       var temp3 = document.createElement('td');
       var temp4 = document.createElement('input');
       temp4.type = 'text';
-      temp4.placeholder = 'x';
+      temp4.placeholder = 'x,y,...';
 
       var temp5 = document.createElement('input');
       temp5.type = 'text';
-      temp5.placeholder = 'F(x)';
+      temp5.placeholder = 'F(x,y,...)';
 
       temp2.className = 'var';
       temp2.id = 'var' + i;
@@ -135,19 +135,17 @@ of the extra input bars 4.-->
     }
   }
   function updateVarOfFunction(variable, val) {
+      console.log("VAL " + val);
     functionSet[val][1] = variable;
-    console.log(JSON.stringify(functionSet))
-
   }
   function updateTextOfFunction(text, val) {
-
-    functionSet[val][0] = text;
-    console.log(JSON.stringify(functionSet))
+      console.log("VAL " + val);
+    functionSet[val].data[0] = text;
     circles.selectAll('g')
       .data(functionSet)
       .select("text")
       .text(function (d) {
-          return d[0];
+          return d.data[0];
       });
 
 
