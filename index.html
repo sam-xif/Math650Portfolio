@@ -42,12 +42,13 @@ of the extra input bars 4.-->
     </header>
 
       <div id="body-content">
-      <table id = "table">
-         <tr>
-           <th>Variable:</th>
-           <th>Function:</th>
-         </tr>
-      </table>
+          <div id="tablecontainer">
+              <table id="table">
+                  <tr>
+                      <th>Function:</th>
+                  </tr>
+              </table>
+          </div>
       <div id = "container">
     </div>
   </div>
@@ -56,7 +57,7 @@ of the extra input bars 4.-->
       <script type="text/javascript">
 
 
-          var funcRE = /^([a-zA-Z])\(((?:[a-zA-Z](?:,(?:[a-zA-Z],)*[a-zA-Z])?))\)\s*=\s*(.*)\s*$|^\s*([a-zA-Z])\s*$/;
+          var funcRE = /^([a-zA-Z])\(((?:[a-zA-Z](?:,(?:[a-zA-Z],)*[a-zA-Z])?))\)\s*=\s*(.+)\s*$|^\s*([a-zA-Z])\s*$/;
 
     function getArrowPoints(x0, y0, x1, y1) {
         var d = Math.sqrt(Math.pow(x1 - x0, 2) + Math.pow(y1 - y0, 2));
@@ -95,25 +96,15 @@ of the extra input bars 4.-->
         console.log("test");
     for (var i = 0; i < n; i++) {
       var temp1 = document.createElement('tr');
-      var temp2 = document.createElement('td');
       var temp3 = document.createElement('td');
-      var temp4 = document.createElement('input');
-      temp4.type = 'text';
-      temp4.placeholder = 'x,y,...';
-
       var temp5 = document.createElement('input');
       temp5.type = 'text';
       temp5.placeholder = 'f(x,y,...)=...';
 
-      temp2.className = 'var';
-      temp2.id = 'var' + i;
-
       temp3.className = 'fun';
       temp3.id = 'fun' + i;
 
-      temp2.appendChild(temp4);
       temp3.appendChild(temp5);
-      temp1.appendChild(temp2);
       temp1.appendChild(temp3);
 
       document.getElementById('table').appendChild(temp1);
@@ -367,8 +358,6 @@ of the extra input bars 4.-->
     // Adds parent and children to Datum when
     function logText(id1, id2, doPush, index, varBoolean) {
         var text = document.getElementById(id1).children[0].value;
-        var vars = document.getElementById(id2).children[0].value;
-        var varSet = vars.split(',');
 
         if (text === "Type a Function") {
             return null;
@@ -376,7 +365,6 @@ of the extra input bars 4.-->
         if (doPush) {
             var datum = [];
             datum.push(text)
-            datum.push(varSet)
             datum.push(index)
             var node = createNode(datum);
             functionSet.push(node)

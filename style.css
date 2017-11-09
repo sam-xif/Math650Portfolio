@@ -50,18 +50,22 @@ cursor: default;
 -ms-user-select: none;
 user-select: none;
 }
+
+#tablecontainer {
+    width:23%;
+    float:left;
+}
+
 #table {
   text-align: left;
   overflow: scroll;
-  width: 23%;
   height: 100%;
-  float:left;
   display: inline-block;
   border-collapse: collapse;
   border-right: 15px solid gray;
   border-top: none;
   box-sizing: border-box;
-
+  width: 100%;
 }
 
 #body-content{
@@ -72,10 +76,12 @@ user-select: none;
 
 tr {
   border: 1px solid black;
+  width:100%;
 }
 
 td {
   height: 50px;
+  width:100%;
 }
 
 #table input {
@@ -95,7 +101,8 @@ input:focus {
   float: right;
   margin: 0;
   width: 35%;
-  display: inline-block;
+  display: block;
+  height:100%;
 }
 
 .var {
