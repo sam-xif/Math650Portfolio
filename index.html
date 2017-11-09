@@ -76,7 +76,8 @@ of the extra input bars 4.-->
 
     var functionTree = [];
 
-  function createTable(n){
+    function createTable(n) {
+        console.log("test");
     for (var i = 0; i < n; i++) {
       var temp1 = document.createElement('tr');
       var temp2 = document.createElement('td');
@@ -310,7 +311,7 @@ of the extra input bars 4.-->
 
     var circles = svg.append("g");
     var linesg = svg.append("g");
-
+          /*
     document.getElementById('clear').addEventListener('click', function () {
         svg.selectAll('circle')
           .remove();
@@ -334,7 +335,7 @@ of the extra input bars 4.-->
         createFunction();
         listFunct(false);
     })
-
+    */
     function listFunct(returnFunct) {
         var x = document.createElement('p');
         var y = document.getElementById('masterInput').value;
@@ -396,11 +397,10 @@ of the extra input bars 4.-->
     // Logs data. Sets up 2 different points for each data point
 
     // Adds parent and children to Datum when
-    function logText(id1, id2, doPush) {
-        var text = document.getElementById(id1).value;
-        var vars = document.getElementById(id2).value;
+    function logText(id1, id2, doPush, index, varBoolean) {
+        var text = document.getElementById(id1).children[0].value;
+        var vars = document.getElementById(id2).children[0].value;
         var varSet = vars.split(',');
-
         if (text === "Type a Function") {
             return null;
         }
@@ -408,15 +408,19 @@ of the extra input bars 4.-->
             var datum = [];
             datum.push(text)
             datum.push(varSet)
-            node = createNode(datum);
-            node.layer = 0;
+            datum.push(index)
+            var node = createNode(datum);
             functionSet.push(node)
             //console.log(JSON.stringify(functionSet))
+        }
+        if (varBoolean) {
+            return varSet
         }
         else {
             return (text)
         }
     }
+
 
     function createFunction() {
         var group = circles.selectAll("g")
