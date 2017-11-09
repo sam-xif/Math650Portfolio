@@ -8,7 +8,9 @@ border: none;
 padding: 15px 32px;
 font-size:16px;
 color: white;
-margin-bottom: 15px;
+display:block;
+width:100%;
+/*margin-bottom: 15px;*/
 }
 body {
     font-family: sans-serif;
@@ -17,13 +19,13 @@ body {
   }
 header {
   text-align: left;
-  float: left;
   width: 100%;
   background-color: Gainsboro;
+  display: inline-block;
 }
 
 #subHeader {
- width: 50%;
+ width: 30%;
  display: inline-block;
 }
 h1{
@@ -105,13 +107,18 @@ input:focus {
 }
 
 #derivative {
-  float: right;
   margin: 0;
-  width: 35%;
-  display: block;
+  width: 30%;
+  display: inline-block;
   height:100%;
+  text-align:center;
 }
 
 .var {
   border: 1px solid black;
+}
+
+#clearcell {
+    text-align: center;
+    vertical-align: middle;
 }

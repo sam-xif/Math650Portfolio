@@ -5,9 +5,33 @@
     <meta charset="utf-8" />
     <title></title>
     <style>
-        #maincontent {
-            width:80%;
+        html {
+            height:100%;
+        }
+
+        body {
+            background-color: #c0c0c0;
+            padding: 0px;
+            margin: 0px;
+            font-family: sans-serif;
+            height:100%;
+        }
+
+        header {
+            text-align: center;
+            padding: 50px 0px;
+
+        }
+
+        #pagecontainer {
+            background-color: white;
+            width: 60%;
             margin: 0px auto;
+            height:100%;
+        }
+
+        #maincontent {
+            background-color:white;
         }
 
         .explain-text {
@@ -17,20 +41,41 @@
 
         .explain-text > p {
             text-align:left;
-            padding: 0px 20px;
+            padding: 0px 40px;
+            font-size: 17pt;
+        }
+        .explain-text > img {
+            width: 70%;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>How to use the derivative calculator</h1>
-    </header>
-    <div id="maincontent">
-        <div class="explain-text">
-            <h3>Introdution</h3>
-            <p>
-                The purpose of this web app is to help visualize the chain rule in more than one dimension. It allows the user to create a tree-like structure of dependencies between functions and the software displays the formula for calculating the partial derivatives.
-            </p>
+
+    <div id="pagecontainer">
+        <header>
+            <h1>How to use the derivative calculator</h1>
+        </header>
+        <div id="maincontent">
+            <div class="explain-text">
+                <h2>Introdution</h2>
+                <p>
+                    The purpose of this web app is to help visualize the chain rule in more than one dimension. It allows the user to create a tree-like structure of dependencies between functions and the software displays the formula for calculating the partial derivatives.
+                </p>
+            </div>
+            <div class="explain-text">
+                <h2>The Interface</h2>
+                <p>
+                    On the left, there is a table of text boxes where you can input your functions. The functions can take one of two forms: f([variables])=... or a single letter.
+                    The former is for indicating that a function depends on [variables], while the latter indicates that the variable notated by the single letter is independent.
+                    </p>
+                <p>
+                    As you type in the boxes, you will see circles appear on the canvas to the right. Click these circles to drag them to wherever you want,
+                    and right click to drag arrows to connect two circles. These arrows indicate the flow of dependency across the variables.
+                    When you complete a valid tree in the canvas, you will notice that the derivative is displayed in the header.
+                </p>
+                <img src="screenshot1.png" />
+            </div>
         </div>
     </div>
 </body>

@@ -94,12 +94,17 @@ function getPathsToLeaf(leaf, tree) {
 }
 
 // Converts a path to LaTeX
-function convertPathsToDerivative(paths, partial, varNum, displayFunc) {
+function convertPathsToDerivative(paths, partial, displayFunc) {
     var strings = [];
     if (partial) {
         paths.forEach(function (path) {
             for (var i = 0; i < path.length - 1; i++) {
-                strings.push("\\frac{\\partial (" + displayFunc(path[i].data)[2] + ")}{\\partial " + displayFunc(path[i + 1].data)[0] + "} ");
+                if (displayFunc(path[i].data)[1].length > 1) {
+                    strings.push("\\frac{\\partial (" + displayFunc(path[i].data)[2] + ")}{\\partial " + displayFunc(path[i + 1].data)[0] + "} ");
+                }
+                else {
+                    strings.push("\\frac{d (" + displayFunc(path[i].data)[2] + ")}{d " + displayFunc(path[i + 1].data)[0] + "} ");
+                }
             }
             strings.push("+ ");
         });
@@ -122,20 +127,23 @@ function generateFullExpression(tree, displayFunc) {
         paths.push(getPathsToLeaf(d, tree));
     });
 
+    var numComponents = 0;
     var derivatives = [];
-    var varNum = 0;
-    paths.forEach(function (d) {
-        derivatives.push(convertPathsToDerivative(d, true, varNum, displayFunc));
-        derivatives.push(", ");
-        varNum++;
-    });
+        paths.forEach(function (d) {
+            derivatives.push(convertPathsToDerivative(d, true, displayFunc));
+            derivatives.push(", ");
+            numComponents++;
+        });
 
     var string = "";
     for (var i = 0; i < derivatives.length - 1; i++) {
         string += derivatives[i];
     }
 
-    return "\\nabla F = \\Big \\langle " + string + " \\Big \\rangle";
+    if (numComponents > 1)
+        return "\\nabla " + displayFunc(tree.data)[0] + " = \\Big \\langle " + string + " \\Big \\rangle";
+    else
+        return displayFunc(tree.data)[0] + "'" + " = " + string;
 }
 
 function test() {

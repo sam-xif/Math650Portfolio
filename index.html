@@ -1,4 +1,4 @@
-<!-- https://stackoverflow.com/questions/13152578/create-a-draggable-div-in-native-javascript -->
+﻿<!-- https://stackoverflow.com/questions/13152578/create-a-draggable-div-in-native-javascript -->
 
 <!DOCTYPE html>
 <html>
@@ -27,10 +27,9 @@
           Multivariate Chain Rule
         </h1>
         <h3>By Sam Xifaras and Malcolm Essaid</h3>
+        <h5><a href="instructions.html">Instructions</a></h5>
         </div>
-        <button type="clear" name="button" id='clr'>Clear</button>
         <div id="derivative">
-            $$\nabla F = $$
         </div>
     </header>
 
@@ -38,7 +37,7 @@
           <div id="tablecontainer">
               <table id="table">
                   <tr>
-                      <th>Function:</th>
+                      <th id="clearcell"><button name="button" id='clr'>Clear</button></th>
                   </tr>
               </table>
           </div>
@@ -113,6 +112,8 @@
       functions[i].children[0].value = '';
     }
 
+    d3.selectAll(".fun").style("background-color", "white");
+
   })
   function addEventToFun() {
     var funSet = document.getElementsByClassName('fun');
@@ -122,7 +123,7 @@
         if (!functionSet[val]) {
             logText(('fun' + val), ('var' + val), true, val, false);
             createFunction();
-            return;
+            //return;
         }
 
         var text = logText(('fun' + val), ('var' + val), false, val, false);
