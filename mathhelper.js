@@ -38,7 +38,7 @@ function generateAdjacencyMatrix() {
 
 }
 
-function getLeaves(tree) {
+function getLeaves(tree, displayFunc) {
     var leaves = [];
 
     var nodeStack = [];
@@ -96,13 +96,14 @@ function getPathsToLeaf(leaf, tree) {
 }
 
 // Converts a path to LaTeX
-function convertPathsToDerivative(paths, partial) {
+function convertPathsToDerivative(paths, partial, varNum, displayFunc) {
     // $$\nabla F(x,y) = \Big \langle \frac{\partial F}{\partial x}, \frac{\partial F}{\partial y} \Big \rangle$$
     var strings = [];
     if (partial) {
         paths.forEach(function (path) {
             for (var i = 0; i < path.length - 1; i++) {
-                strings.push("\\frac{\\partial " + path[i].data + "}{\\partial " + path[i + 1].data + "} ");
+                console.log(displayFunc(path[i].data));
+                strings.push("\\frac{\\partial (" + displayFunc(path[i].data)[2] + ")}{\\partial " + displayFunc(path[i + 1].data)[0] + "} ");
             }
             strings.push("+ ");
         });
@@ -117,8 +118,8 @@ function convertPathsToDerivative(paths, partial) {
     return string;
 }
 
-function generateFullExpression(tree) {
-    var leaves = getLeaves(tree);
+function generateFullExpression(tree, displayFunc) {
+    var leaves = getLeaves(tree, displayFunc);
     var paths = [];
 
     leaves.forEach(function (d) {
@@ -126,9 +127,13 @@ function generateFullExpression(tree) {
     });
 
     var derivatives = [];
+    var varNum = 0;
+    console.log("PATH");
+    console.log(paths);
     paths.forEach(function (d) {
-        derivatives.push(convertPathsToDerivative(d, true));
+        derivatives.push(convertPathsToDerivative(d, true, varNum, displayFunc));
         derivatives.push(", ");
+        varNum++;
     });
 
     var string = "";
@@ -159,7 +164,5 @@ function test() {
     root.children.push(xnode);
     root.children.push(ynode);
 
-    d3.select("#derivative").html("$$" + generateFullExpression(root) + "$$");
+    d3.select("#derivative").html("$$" + generateFullExpression(root, function (d) { return d; }) + "$$");
 }
-
-test();

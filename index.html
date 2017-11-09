@@ -36,7 +36,7 @@ of the extra input bars 4.-->
         <h3>By Sam Xifaras and Malcolm Essaid</h3>
         </div>
         <div id="derivative">
-            $$\nabla F(x,y) = \Big \langle \frac{\partial F}{\partial x}, \frac{\partial F}{\partial y} \Big \rangle$$
+            $$\nabla F = $$
         </div>
 
     </header>
@@ -56,7 +56,7 @@ of the extra input bars 4.-->
       <script type="text/javascript">
 
 
-          var funcRE = /([a-zA-Z])\(((?:[a-zA-Z](?:,(?:[a-zA-Z],)*[a-zA-Z])?))\)\s*=\s*(.*)/;
+          var funcRE = /^([a-zA-Z])\(((?:[a-zA-Z](?:,(?:[a-zA-Z],)*[a-zA-Z])?))\)\s*=\s*(.*)\s*$|^\s*([a-zA-Z])\s*$/;
 
     function getArrowPoints(x0, y0, x1, y1) {
         var d = Math.sqrt(Math.pow(x1 - x0, 2) + Math.pow(y1 - y0, 2));
@@ -103,7 +103,7 @@ of the extra input bars 4.-->
 
       var temp5 = document.createElement('input');
       temp5.type = 'text';
-      temp5.placeholder = 'f=...';
+      temp5.placeholder = 'f(x,y,...)=...';
 
       temp2.className = 'var';
       temp2.id = 'var' + i;
@@ -120,7 +120,8 @@ of the extra input bars 4.-->
     }
   }
 
-  function addEventToVar(){
+    function addEventToVar() {
+        /*
     var varSet = document.getElementsByClassName('var');
     for (var i = 0; i < varSet.length; i++) {
       varSet[i].addEventListener('keyup', function(){
@@ -129,9 +130,10 @@ of the extra input bars 4.-->
         createFunction();
         this.removeEventListener('keyup', arguments.callee);
       })
-    }
+    }*/
   }
-  function addSecondEventToVar(){
+  function addSecondEventToVar() {
+      /*
     var varSet = document.getElementsByClassName('var');
     for (var i = 0; i < varSet.length; i++) {
       varSet[i].addEventListener('keyup', function(){
@@ -143,15 +145,23 @@ of the extra input bars 4.-->
           else {
               d3.select(this).style("background-color", "#4ef442");
               updateVarOfFunction(text, val);
+              updateDerivative();
           }
       })
-    }
+    }*/
   }
   function addEventToFun() {
     var funSet = document.getElementsByClassName('fun');
     for (var i = 0; i < funSet.length; i++) {
-      funSet[i].addEventListener('keyup', function(){
-        var val = d3.select(this).attr('id').substring(3);
+        funSet[i].addEventListener('keyup', function () {
+            var val = d3.select(this).attr('id').substring(3);
+            console.log(!functionSet[val]);
+        if (!functionSet[val]) {
+            logText(('fun' + val), ('var' + val), true, val, false);
+            createFunction();
+            return;
+        }
+
         var text = logText(('fun' + val), ('var' + val), false, val, false);
         if (!text) {
             d3.select(this).style("background-color", "#ff7777");
@@ -159,6 +169,7 @@ of the extra input bars 4.-->
         else {
             d3.select(this).style("background-color", "#4ef442");
             updateTextOfFunction(text, val);
+            updateDerivative();
         }
       })
     }
@@ -237,6 +248,7 @@ of the extra input bars 4.-->
                 if (minDistance == null) line.remove();
 
                 console.log(lines);
+                /*
                 var hasParent = false;
                 lines.forEach(function (d) {
                     if (d.target.node().isEqualNode(target.node())) {
@@ -244,11 +256,11 @@ of the extra input bars 4.-->
                     }
                 });
                 console.log(hasParent);
-
+                */
 
 
                 // If line is not targetted or target and source are already connected, remove
-                if (hasParent || target == null || minDistance > defaultRadius) {
+                if (/*hasParent || */target == null || minDistance > defaultRadius) {
                     line.remove();
                 }
                 else {
@@ -278,6 +290,8 @@ of the extra input bars 4.-->
                         "source": lineSrc,
                         "target": target
                     });
+
+                    updateDerivative();
                 }
             }
 
@@ -370,22 +384,47 @@ of the extra input bars 4.-->
         }
 
         // Validate the variable string
-        if (varBoolean) {
-            var valid = true;
-            varSet.forEach(function (d) { if (d.length > 1) valid = false; });
-            if (!valid) return valid;
-        }
-        else {
-            var valid = funcRE.test(text);
-            if (!valid) return valid;
+        var valid = funcRE.test(text);
+        if (!valid) {
+            console.log("INVALID");
+            return valid;
         }
 
-        if (varBoolean) {
-            return varSet
+        return (text)
+    }
+
+    function updateDerivative() {
+        // Every time logText succeeds, update everything
+        var root = null;
+        var validTree = true;
+        functionSet.forEach(function (d) {
+            if (d.parent == null) {
+                if (root == null) {
+                    root = d;
+                }
+                else {
+                    // Display error message that there is more than one root
+                    validTree = false;
+                }
+            }
+        })
+        if (validTree) {
+            console.log("derivative");
+            d3.select("#derivative").html("$$" + generateFullExpression(root, function (d) {
+                var match = funcRE.exec(d[0]);
+                console.log("MATCH");
+                console.log(match);
+                if (match[1] == null) {
+                    return [match[0], match[0], match[0]];
+                }
+                else {
+                    return [match[1], match[2].split(','), match[3]];
+                }
+            }) + "$$");
         }
-        else {
-            return (text)
-        }
+
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+
     }
 
 
