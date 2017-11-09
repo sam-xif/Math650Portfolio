@@ -17,20 +17,27 @@ function createNode(data) {
         isRoot: false,
         parent: null,
         children: [],
-        data: data
+        data: data,
+        layer: null
     }
 }
 
 function addChild(node, parent) {
+    if (node.layer != null && parent.layer > node.layer) {
+        return false;
+    }
+
     parent.children.push(node);
     node.parent = parent;
+    node.layer = node.parent.layer + 1;
+    return true;
 }
 
 function generateAdjacencyMatrix() {
 
 }
 
-function getLeaves(tree) {
+function getLeaves(tree, displayFunc) {
     var leaves = [];
 
     var nodeStack = [];
@@ -63,7 +70,6 @@ function getPathsToLeaf(leaf, tree) {
     var path = [];
     var counter = 0;
     nodeStack.push({ layer: 0, node: tree });
-    console.log(path);
     while (nodeStack.length > 0) {
         var obj = nodeStack.pop();
 
@@ -88,13 +94,12 @@ function getPathsToLeaf(leaf, tree) {
 }
 
 // Converts a path to LaTeX
-function convertPathsToDerivative(paths, partial) {
-    // $$\nabla F(x,y) = \Big \langle \frac{\partial F}{\partial x}, \frac{\partial F}{\partial y} \Big \rangle$$
+function convertPathsToDerivative(paths, partial, varNum, displayFunc) {
     var strings = [];
     if (partial) {
         paths.forEach(function (path) {
             for (var i = 0; i < path.length - 1; i++) {
-                strings.push("\\frac{\\partial " + path[i].data + "}{\\partial " + path[i + 1].data + "} ");
+                strings.push("\\frac{\\partial (" + displayFunc(path[i].data)[2] + ")}{\\partial " + displayFunc(path[i + 1].data)[0] + "} ");
             }
             strings.push("+ ");
         });
@@ -109,8 +114,8 @@ function convertPathsToDerivative(paths, partial) {
     return string;
 }
 
-function generateFullExpression(tree) {
-    var leaves = getLeaves(tree);
+function generateFullExpression(tree, displayFunc) {
+    var leaves = getLeaves(tree, displayFunc);
     var paths = [];
 
     leaves.forEach(function (d) {
@@ -118,9 +123,11 @@ function generateFullExpression(tree) {
     });
 
     var derivatives = [];
+    var varNum = 0;
     paths.forEach(function (d) {
-        derivatives.push(convertPathsToDerivative(d, true));
+        derivatives.push(convertPathsToDerivative(d, true, varNum, displayFunc));
         derivatives.push(", ");
+        varNum++;
     });
 
     var string = "";
@@ -134,7 +141,7 @@ function generateFullExpression(tree) {
 function test() {
     var root = createEmptyTree();
     root.data = "F";
-    
+
     var xnode = createNode("x");
     var ynode = createNode("y");
     var snode = createNode("s");
@@ -151,7 +158,5 @@ function test() {
     root.children.push(xnode);
     root.children.push(ynode);
 
-    d3.select("#derivative").html("$$" + generateFullExpression(root) + "$$");
+    d3.select("#derivative").html("$$" + generateFullExpression(root, function (d) { return d; }) + "$$");
 }
-
-test();

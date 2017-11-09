@@ -1,55 +1,53 @@
-/*https://stackoverflow.com/questions/3540194/how-to-make-a-grid-like-graph-paper-grid-with-just-css*/
-
+html {
+  height: 100%;
+}
+#clr{
+background-color: #555555;
+cursor: pointer;
+border: none;
+padding: 15px 32px;
+font-size:16px;
+color: white;
+margin-bottom: 15px;
+}
 body {
     font-family: sans-serif;
-}
+    height: 100%;
+    margin: 0;
+  }
 header {
-  margin: 0px auto;
-  text-align: center;
+  text-align: left;
+  float: left;
+  width: 100%;
+  background-color: Gainsboro;
+}
 
+#subHeader {
+ width: 50%;
+ display: inline-block;
 }
 h1{
-  margin-bottom: 5px;
+  margin: 0px;
+  width: 100%;
 }
-h3 {
-  margin-top: 3px;
+h3{
+  margin: 0px;
+  width: 100%;
 }
-#rightside{
-  float: right;
-}
-
 #container {
-  border-color: black;
-  
-  background-size: 40px 40px;
-  background-image: radial-gradient(circle, #000000 1px, rgba(0, 0, 0, 0) 1px);
+  width: 77%;
+  height: 100%;
+  display: inline-block;
+  float:right;
 }
-
-#leftside{
-  float: left;
-  padding: 0;
-}
-
-.sideBars {
-  font-family: 'Georgia', serif;
-  background-color: #FAEBD7;
-  border-style: double;
-  border-color: black;
-  padding: 10px;
-  padding-bottom: 15px;
-  width: 135px;
-  text-align: center;
-}
-
-#leftside h5{
-  margin: 3px 7px;
-
-}
-
 
 svg {
-    border: 2px solid black;
     overflow: hidden;
+    display: inline;
+    margin: 100px 0px;
+    width: 100%;
+    float: right;
+    height: 100%;
 }
 
 svg text {
@@ -60,16 +58,60 @@ cursor: default;
 user-select: none;
 }
 
-#masterInput {
-  text-align: center;
+#tablecontainer {
+    width:11.5%;
+    float:left;
 }
 
-#masterCreate {
-  margin-top: 9px;
-  margin-bottom: 9px;
+#table {
+  text-align: left;
+  overflow: scroll;
+  height: 100%;
+  display: inline-block;
+  border-collapse: collapse;
+  border-right: 15px solid gray;
+  border-top: none;
+  box-sizing: border-box;
+  width: 100%;
 }
 
-#masterVar{
-  margin-top: 9px;
-  text-align: center;
+#body-content{
+  clear:both;
+  border-top: 1px solid black;
+  height: 100%;
+}
+
+tr {
+  border: 1px solid black;
+  width:100%;
+}
+
+td {
+  height: 50px;
+  width:100%;
+}
+
+#table input {
+  border: none;
+  padding-left: 15px;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: none;
+  background-color: rgba(0, 0, 255, 0.1);
+}
+
+#derivative {
+  float: right;
+  margin: 0;
+  width: 35%;
+  display: block;
+  height:100%;
+}
+
+.var {
+  border: 1px solid black;
 }
