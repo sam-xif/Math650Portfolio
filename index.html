@@ -182,13 +182,6 @@ of the extra input bars 4.-->
 
   }
 
-  //var svg = d3.select("#container").append("svg")
-  //    .attr("height", '100%')
-  //    .style("margin", "0 auto")
-  //    .style("display", "block")
-  //    .style("overflow", "visible")
-  //    .on("mouseup", function (d) {
-
     var dragObj = null;
 
     var lineSrc = null;
@@ -271,16 +264,6 @@ of the extra input bars 4.-->
                     lineSrc.datum(srcDatum);
                     target.datum(targetDatum);
 
-                    /*
-                    line.select("line").attr("x2", target.attr("ix"))
-                      .attr("y2", target.attr("iy"));
-                    var x1 = line.select("line").attr("x1");
-                    var y1 = line.select("line").attr("y1");
-                    var x2 = line.select("line").attr("x2");
-                    var y2 = line.select("line").attr("y2");
-                    line.select(".arrowhead")
-                        .attr("points", getArrowPoints(+x1, +y1, +x2, +y2));
-                        */
                     var x1 = lineSrc.attr("ix");
                     var y1 = lineSrc.attr("iy");
                     var x2 = target.attr("ix");
@@ -347,31 +330,7 @@ of the extra input bars 4.-->
 
     var circles = svg.append("g");
     var linesg = svg.append("g");
-          /*
-    document.getElementById('clear').addEventListener('click', function () {
-        svg.selectAll('circle')
-          .remove();
-        svg.selectAll('text')
-          .remove()
-        d3.selectAll(".subFunction").remove();
-        d3.selectAll(".listFunction").remove();
-        document.getElementById('functDisplay').innerHTML = '';
-        document.getElementById('bar').value = 'Number of Inputs';
 
-    })
-
-    document.getElementById('masterInput').addEventListener('click', function () {
-        document.getElementById('masterInput').value = "";
-    })
-    document.getElementById('masterVar').addEventListener('click', function () {
-        document.getElementById('masterVar').value = "";
-    })
-    document.getElementById('masterCreate').addEventListener('click', function () {
-        logText('masterInput', 'masterVar', true);
-        createFunction();
-        listFunct(false);
-    })
-    */
     function listFunct(returnFunct) {
         var x = document.createElement('p');
         var y = document.getElementById('masterInput').value;
@@ -388,47 +347,6 @@ of the extra input bars 4.-->
             return x;
         }
     }
-          /*
-<<<<<<< HEAD
-    if (doPush){
-      var datum = [];
-      datum.push(text)
-      datum.push(varSet)
-      datum.push(index)
-      functionSet.push(datum)
-      //console.log(JSON.stringify(functionSet))
-    }
-    if (varBoolean){
-      return varSet
-    }
-    else {
-      return (text)
-    }
-  }
-
-  function createFunction() {
-
-    // Need to create definite height/width
-    var width = document.getElementById('container').width;
-    var height = document.getElementById('container').height;
-      var group = circles.selectAll("g")
-        .data(functionSet)
-        .enter()
-        .append("g")
-        .attr("transform", "translate(" + 100/2 + "," + 800/8 + ")")
-        .attr("ix", width / 2)
-        .attr("iy", height / 8)
-        .on("mousedown", function (d) {
-            if (d3.event.button == 0) {
-                line = null;
-                dragObj = d3.select(this);
-            }
-            else {
-                // Make sure dragObj is null
-                dragObj = null;
-=======
->>>>>>> Added arrowheads
-*/
 
     // Logs data. Sets up 2 different points for each data point
 
