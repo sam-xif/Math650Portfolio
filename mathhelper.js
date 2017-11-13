@@ -1,6 +1,6 @@
 /*
- Trees are represented as JSON objects that can be converted into adjacency matrix form.
- Nodes with no children are assumed to be independent variables, though in the future there ma be a distinction between 'dependent' nodes and 'independent' nodes.s
+ * Trees are represented as JSON objects that can be converted into adjacency matrix form.
+ * Nodes with no children are assumed to be independent variables, though in the future there ma be a distinction between 'dependent' nodes and 'independent' nodes.s
  */
 
 function createEmptyTree() {
