@@ -96,6 +96,7 @@ function convertPathsToDerivative(paths, partial, displayFunc) {
     if (partial) {
         paths.forEach(function (path) {
             for (var i = 0; i < path.length - 1; i++) {
+                console.log(path[i].data + ', ' + displayFunc(path[i].data));
                 if (displayFunc(path[i].data)[1].length > 1) {
                     strings.push("\\frac{\\partial (" + displayFunc(path[i].data)[2] + ")}{\\partial " + displayFunc(path[i + 1].data)[0] + "} ");
                 }
@@ -168,7 +169,7 @@ function convertJsonToTree(json) {
             nodes[i].children[j] = nodes[nodes[i].children[j]];
         }
     }
-
+    console.log(root);
     return root;
 }
 

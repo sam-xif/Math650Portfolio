@@ -230,19 +230,15 @@ function updateDerivative() {
     var root = null;
     var validTree = true;
     functionSet.forEach(function (d) {
-        if (d.parent == null) {
-            if (root == null) {
-                root = d;
-            }
-            else {
-                // Display error message that there is more than one root
-                validTree = false;
-            }
+        if (d.parent == null && root == null) {
+            root = d;
         }
     });
+    console.log(root);
     if (validTree) {
         d3.select("#derivative").html("$$" + generateFullExpression(root, function (d) {
             var match = funcRE.exec(d[0]);
+            //console.log(match);
             if (match[1] == null) {
                 return [match[0], match[0], match[0]];
             }
@@ -332,19 +328,31 @@ function loadFunctions() {
             .html(function (d) { return d.data; })
             .on("click", function (d, i) {
                 // Code for when a function is clicked
-                console.log("clear");
                 clear();
 
                 var xinitial = 200;
                 var yinitial = 200;
-
-                (function recursiveDisplay(node, index, offsetX, offsetY) {
+                console.log(d);
+                var finalindex = (function recursiveDisplay(node, index, offsetX, offsetY) {
                     var layerOffset = 200;
                     var childOffset = 150;
+                    
+                    var nodeAlreadyExists = false;
+                    var duplicateIndex = null;
+                    circles.selectAll("g")
+                        .each(function (d, i) {
+                            if (d.data[0] === node.data) {
+                                nodeAlreadyExists = true;
+                                duplicateIndex = i;
+                            }
+                        });
 
-                    document.getElementById("fun" + index).children[0].value = node.data;
-                    logText(("fun" + index), ('var' + index), true, index, false);
-                    createFunction(offsetX, offsetY);
+                    if (!nodeAlreadyExists) {
+                        document.getElementById("fun" + index).children[0].value = node.data;
+                        logText(("fun" + index), ('var' + index), true, index, false);
+                        createFunction(offsetX, offsetY);
+                    }
+
                     var oldIndex = index;
 
                     node.children.forEach(function (c, i) {
@@ -353,18 +361,24 @@ function loadFunctions() {
                         var newXoffset = offsetX + (i * childOffset);
                         var newYoffset = offsetY + (layerDiff * layerOffset);
                         index++;
-                        recursiveDisplay(c, index, newXoffset, newYoffset);
+
+                        var newIndex = recursiveDisplay(c, index, newXoffset, newYoffset);
 
                         // Update children and parent, because they are not automatically added by createFunction
-                        functionSet[index].parent = node;
-                        functionSet[oldIndex].children.push(c);
+                        //functionSet[(nodeAlreadyExists ? duplicateIndex : index)].parent = node; //don't need to set the parent because nodes may have more than one parent
                         
                         // Create line between parent and child
                         var src = circles.selectAll("g")
                             .filter(function (d, i) { return i === oldIndex; })
 
+                        // Store the indices found in the filter
+                        var childIndexCandidates = [];
+
                         var dest = circles.selectAll("g")
-                            .filter(function (d, i) { return i === index; })
+                            .filter(function (d, i) { if (d.data[0] === c.data || i === index) childIndexCandidates.push(i); return d.data[0] === c.data || i === index; })
+                            .filter(function (d, i) { return i === 0; });
+
+                        functionSet[oldIndex].children.push(functionSet[childIndexCandidates[0]]);
 
                         var points = getLinePoints(src.attr("ix"), src.attr("iy"), dest.attr("ix"), dest.attr("iy"), defaultRadius);
 
@@ -388,9 +402,12 @@ function loadFunctions() {
                             "source": src,
                             "target": dest
                         });
-                    });
-                })(d, 0, xinitial, yinitial);
 
+                        index = newIndex;
+                    });
+
+                    return index;
+                })(d, 0, xinitial, yinitial);
                 updateDerivative();
             });
     });
