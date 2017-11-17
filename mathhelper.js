@@ -164,7 +164,7 @@ function convertJsonToTree(json) {
         if (nodes[i].parent != null) {
             nodes[i].parent = nodes[nodes[i].parent];
         }
-        for (var j = 0; j < nodes[i].children; j++) {
+        for (var j = 0; j < nodes[i].children.length; j++) {
             nodes[i].children[j] = nodes[nodes[i].children[j]];
         }
     }

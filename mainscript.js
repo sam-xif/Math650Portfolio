@@ -1,5 +1,7 @@
 // mainscript.js: Contains the main functions and code
 
+// TODO: Clean up logText
+
 // ***** VARIABLES AND CONSTANTS *****
 
 /* This Regex verifies that the input in a text box is a valid function.
@@ -224,6 +226,7 @@ function logText(id1, id2, doPush, index, varBoolean) {
 
 function updateDerivative() {
     // Every time logText succeeds, update everything
+    console.log(functionSet);
     var root = null;
     var validTree = true;
     functionSet.forEach(function (d) {
@@ -311,7 +314,6 @@ function createFunction(x, y) {
       .attr("y", -10)
       .attr("text-anchor", "middle")
       .text(function (d) {
-          console.log(d);
           return d.data[0];
       });
 }
@@ -330,19 +332,20 @@ function loadFunctions() {
             .html(function (d) { return d.data; })
             .on("click", function (d, i) {
                 // Code for when a function is clicked
+                console.log("clear");
+                clear();
 
                 var xinitial = 200;
                 var yinitial = 200;
 
                 (function recursiveDisplay(node, index, offsetX, offsetY) {
-                    var layerOffset = 100;
-                    var childOffset = 100;
+                    var layerOffset = 200;
+                    var childOffset = 150;
 
-                    console.log(node.data);
                     document.getElementById("fun" + index).children[0].value = node.data;
                     logText(("fun" + index), ('var' + index), true, index, false);
-                    console.log(functionSet);
                     createFunction(offsetX, offsetY);
+                    var oldIndex = index;
 
                     node.children.forEach(function (c, i) {
                         var layerDiff = c.layer - node.layer;
@@ -351,16 +354,20 @@ function loadFunctions() {
                         var newYoffset = offsetY + (layerDiff * layerOffset);
                         index++;
                         recursiveDisplay(c, index, newXoffset, newYoffset);
+
+                        // Update children and parent, because they are not automatically added by createFunction
+                        functionSet[index].parent = node;
+                        functionSet[oldIndex].children.push(c);
                         
+                        // Create line between parent and child
                         var src = circles.selectAll("g")
-                            .filter(function (d, i) { return i === index - 1; })
+                            .filter(function (d, i) { return i === oldIndex; })
 
                         var dest = circles.selectAll("g")
                             .filter(function (d, i) { return i === index; })
 
                         var points = getLinePoints(src.attr("ix"), src.attr("iy"), dest.attr("ix"), dest.attr("iy"), defaultRadius);
 
-                        // Add connecting line
                         var tmpline = linesg.append("g");
 
                         tmpline.append("line")
@@ -383,12 +390,14 @@ function loadFunctions() {
                         });
                     });
                 })(d, 0, xinitial, yinitial);
+
+                updateDerivative();
             });
     });
 }
 
 // ***** ADD EVENT LISTENERS *****
-document.getElementById('clr').addEventListener('click', function () {
+function clear() {
     circles.selectAll('g').remove();
     linesg.selectAll('g').remove();
     lines = [];
@@ -399,8 +408,9 @@ document.getElementById('clr').addEventListener('click', function () {
     }
 
     d3.selectAll(".fun").style("background-color", "white");
+}
 
-})
+document.getElementById('clr').addEventListener('click', clear);
 
 // ***** SET UP TABLES AND EVENTS *****
 createTable(12);
