@@ -1,124 +1,152 @@
 html {
-  height: 100%;
+    height: 100%;
 }
-#clr{
-background-color: #555555;
-cursor: pointer;
-border: none;
-padding: 15px 32px;
-font-size:16px;
-color: white;
-display:block;
-width:100%;
-/*margin-bottom: 15px;*/
+
+#clr {
+    background-color: #555555;
+    cursor: pointer;
+    border: none;
+    padding: 15px 32px;
+    font-size: 16px;
+    color: white;
+    display: block;
+    width: 100%;
+    height: 100%;
+    /*margin-bottom: 15px;*/
 }
+
+#clearcell {
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    height: 50px;
+}
+
 body {
     font-family: sans-serif;
     height: 100%;
     margin: 0;
-  }
+}
+
 header {
-  text-align: left;
-  width: 100%;
-  background-color: Gainsboro;
-  display: inline-block;
+    text-align: left;
+    width: 100%;
+    background-color: Gainsboro;
+    display: inline-block;
 }
 
 #subHeader {
- width: 30%;
- display: inline-block;
+    width: 30%;
+    display: inline-block;
 }
-h1{
-  margin: 0px;
-  width: 100%;
+
+h1 {
+    margin: 0px;
+    width: 100%;
 }
-h3{
-  margin: 0px;
-  width: 100%;
+
+h3 {
+    margin: 0px;
+    width: 100%;
 }
+
 #container {
-  width: 77%;
-  height: 100%;
-  display: inline-block;
-  float:right;
+    width: 76%;
+    height: 100%;
+    display: inline-block;
 }
 
 svg {
     overflow: hidden;
-    display: inline;
-    margin: 100px 0px;
+    display: block;
+    margin: 0 auto;
     width: 100%;
-    float: right;
     height: 100%;
 }
 
 svg text {
-cursor: default;
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 #tablecontainer {
-    width:11.5%;
-    float:left;
+    /*width:11.5%;*/
+    /*float:left;*/
 }
 
-#table {
-  text-align: left;
-  overflow: scroll;
-  height: 100%;
-  display: inline-block;
-  border-collapse: collapse;
-  border-right: 15px solid gray;
-  border-top: none;
-  box-sizing: border-box;
-  width: 100%;
+.table {
+    text-align: left;
+    overflow: scroll;
+    height: 100%;
+    border-collapse: collapse;
+    border-right: 15px solid gray;
+    border-top: none;
+    box-sizing: border-box;
+    width: 100%;
 }
 
-#body-content{
-  clear:both;
-  border-top: 1px solid black;
-  height: 100%;
+#body-content {
+    clear: both;
+    border-top: 1px solid black;
+    height: 100%;
 }
 
 tr {
-  border: 1px solid black;
-  width:100%;
+    border: 1px solid black;
+    width: 100%;
 }
-
+/*
 td {
-  height: 50px;
-  width:100%;
-}
-
-#table input {
-  border: none;
-  padding-left: 15px;
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
+    height: 50px;
+    width: 100%;
+display:block; box-sizing:border-box; clear:both}
+    */
+.table input {
+    border: none;
+    padding-left: 15px;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 input:focus {
-  outline: none;
-  background-color: rgba(0, 0, 255, 0.1);
+    outline: none;
+    background-color: rgba(0, 0, 255, 0.1);
 }
 
 #derivative {
-  margin: 0;
-  width: 30%;
-  display: inline-block;
-  height:100%;
-  text-align:center;
+    margin: 0;
+    width: 30%;
+    display: inline-block;
+    height: 100%;
+    text-align: center;
 }
 
 .var {
-  border: 1px solid black;
+    border: 1px solid black;
 }
 
-#clearcell {
+th, td {
     text-align: center;
     vertical-align: middle;
+    height: 50px;
+    width: 100%;
+    box-sizing: border-box; clear: both;
+}
+
+td:hover {
+    background-color: rgba(0, 0, 255, 0.1);
+}
+
+.tableleft {
+    float: left;
+    width: 12%;
+}
+
+.containerleft {
+    float:left;
+    width: 76%;
 }

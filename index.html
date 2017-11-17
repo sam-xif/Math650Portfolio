@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <title>Chain Rule</title>
     <link href="style.css" type="text/css" rel="stylesheet">
@@ -19,35 +19,49 @@
         });
     </script>
 
-  </head>
-  <body>
+</head>
+<body>
     <header>
-      <div id = "subHeader">
-        <h1>
-          Multivariate Chain Rule
-        </h1>
-        <h3>By Sam Xifaras and Malcolm Essaid</h3>
-        <h5><a href="instructions.html">Instructions</a></h5>
+        <div id="subHeader">
+            <h1>
+                Multivariate Chain Rule
+            </h1>
+            <h3>By Sam Xifaras and Malcolm Essaid</h3>
+            <h5><a href="instructions.html">Instructions</a></h5>
         </div>
         <div id="derivative">
         </div>
     </header>
 
-      <div id="body-content">
-          <div id="tablecontainer">
-              <table id="table">
-                  <tr>
-                      <th id="clearcell"><button name="button" id='clr'>Clear</button></th>
-                  </tr>
-              </table>
-          </div>
-      <div id = "container">
+    <div id="body-content">
+        <div id="functionscontainer" class="tableleft">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Functions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div id="tablecontainer" class="tableleft">
+            <table class="table" id="inputtable">
+                <thead>
+                    <tr>
+                        <th id="clearcell"><button name="button" id='clr'>Clear</button></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div id="container" class="containerleft">
+        </div>
+        <br style="clear:left;" />
     </div>
-  </div>
 
     <script src="mathhelper.js" type="text/javascript"></script>
-      <script src="util.js" type="text/javascript"></script>
-      <script src="mainscript.js" type="text/javascript"></script>
-  </body>
+    <script src="util.js" type="text/javascript"></script>
+    <script src="mainscript.js" type="text/javascript"></script>
+</body>
 
 </html>

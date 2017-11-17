@@ -1,4 +1,5 @@
-/*
+/* File that helps with displaying derivatives of node trees.
+ *
  * Trees are represented as JSON objects that can be converted into adjacency matrix form.
  * Nodes with no children are assumed to be independent variables, though in the future there ma be a distinction between 'dependent' nodes and 'independent' nodes.s
  */
@@ -31,10 +32,6 @@ function addChild(node, parent) {
     node.parent = parent;
     node.layer = node.parent.layer + 1;
     return true;
-}
-
-function generateAdjacencyMatrix() {
-
 }
 
 function getLeaves(tree, displayFunc) {
@@ -129,11 +126,11 @@ function generateFullExpression(tree, displayFunc) {
 
     var numComponents = 0;
     var derivatives = [];
-        paths.forEach(function (d) {
-            derivatives.push(convertPathsToDerivative(d, true, displayFunc));
-            derivatives.push(", ");
-            numComponents++;
-        });
+    paths.forEach(function (d) {
+        derivatives.push(convertPathsToDerivative(d, true, displayFunc));
+        derivatives.push(", ");
+        numComponents++;
+    });
 
     var string = "";
     for (var i = 0; i < derivatives.length - 1; i++) {
@@ -146,6 +143,37 @@ function generateFullExpression(tree, displayFunc) {
         return displayFunc(tree.data)[0] + "'" + " = " + string;
 }
 
+function convertJsonToTree(json) {
+    // json should be one row of the dataset, so an array of function nodes
+    var root = null;
+    var nodes = [];
+    for (var i = 0; i < json.length; i++) {
+        var node = createNode(json[i].data);
+        node.isRoot = json[i].isRoot;
+        if (node.isRoot) {
+            root = node;
+        }
+        node.layer = json[i].layer;
+        node.parent = json[i].parent;
+        node.children = json[i].children;
+        nodes.push(node);
+    }
+
+    // Resolve children indices
+    for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i].parent != null) {
+            nodes[i].parent = nodes[nodes[i].parent];
+        }
+        for (var j = 0; j < nodes[i].children; j++) {
+            nodes[i].children[j] = nodes[nodes[i].children[j]];
+        }
+    }
+
+    return root;
+}
+
+
+/*
 function test() {
     var root = createEmptyTree();
     root.data = "F";
@@ -167,4 +195,4 @@ function test() {
     root.children.push(ynode);
 
     d3.select("#derivative").html("$$" + generateFullExpression(root, function (d) { return d; }) + "$$");
-}
+}*/

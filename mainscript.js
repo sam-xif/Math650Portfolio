@@ -1,6 +1,11 @@
 // mainscript.js: Contains the main functions and code
 
 // ***** VARIABLES AND CONSTANTS *****
+
+/* This Regex verifies that the input in a text box is a valid function.
+ * It checks if either a single letter was entered (for an independent variable) or if something of this format was entered:
+ *     f(x,y,...)=...
+ */
 var funcRE = /^([a-zA-Z])\(((?:[a-zA-Z](?:,(?:[a-zA-Z],)*[a-zA-Z])?))\)\s*=\s*(.+)\s*$|^\s*([a-zA-Z])\s*$/;
 
 var functionSet = [];
@@ -26,11 +31,11 @@ const width = 750,
       };
 
 var svg = d3.select("#container").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .style("margin", "0 auto")
-    .style("display", "block")
-    .style("overflow", "visible")
+    //.attr("width", width)
+    //.attr("height", height)
+    //.style("margin", "0 auto")
+    //.style("display", "block")
+    //.style("overflow", "visible")
     .on("mouseup", function (d) {
         if (line != null) {
             var coordinates = [0, 0];
@@ -155,7 +160,7 @@ function createTable(n) {
         temp3.appendChild(temp5);
         temp1.appendChild(temp3);
 
-        document.getElementById('table').appendChild(temp1);
+        document.getElementById('inputtable').getElementsByTagName("tbody")[0].appendChild(temp1);
     }
 }
 
@@ -324,6 +329,42 @@ function createFunction() {
       });
 }
 
+function loadFunctions() {
+    d3.json("functions.json", function (error, data) {
+        var trees = data.map(convertJsonToTree);
+        console.log(trees);
+
+        d3.select("#functionscontainer tbody").selectAll("tr")
+            .data(trees)
+            .enter()
+            .append("tr")
+            .classed("data", true)
+            .append("td")
+            .html(function (d) { return d.data; })
+            .on("click", function (d) {
+                // Code for when a  function is clicked
+
+                var xinitial = 200;
+                var yinitial = 200;
+
+                (function recursiveDisplay(node, offsetX, offsetY) {
+                    var layerOffset = 100;
+                    var childOffset = 100;
+
+
+                    node.children.forEach(function (c, i) {
+                        var layerDiff = c.layer - node.layer;
+                        
+                        var newXoffset = offsetX + (i * childOffset);
+                        var newYoffset = offsetY + (layerDiff * layerOffset);
+
+                        recursiveDisplay(c, newXoffset, newYoffset);
+                    });
+                })(d, xinitial, yinitial);
+            });
+    });
+}
+
 // ***** ADD EVENT LISTENERS *****
 document.getElementById('clr').addEventListener('click', function () {
     circles.selectAll('g').remove();
@@ -339,6 +380,7 @@ document.getElementById('clr').addEventListener('click', function () {
 
 })
 
-// ***** SET UP TABLE AND EVENTS *****
+// ***** SET UP TABLES AND EVENTS *****
 createTable(12);
+loadFunctions();
 addEventToFun();
