@@ -197,23 +197,6 @@ function updateTextOfFunction(text, val) {
       });
 }
 
-function listFunct(returnFunct) {
-    var x = document.createElement('p');
-    var y = document.getElementById('masterInput').value;
-    if (y === "Type a Function") {
-        return;
-    }
-    x.innerHTML = y;
-    x.style.margin = 0;
-    x.className = "listFunction";
-    document.getElementById('leftside').appendChild(x);
-    document.getElementById('masterInput').value = "Type a Function";
-    document.getElementById('masterVar').value = 'Define the Variables';
-    if (returnFunct) {
-        return x;
-    }
-}
-
 // Logs data. Sets up 2 different points for each data point
 // Adds parent and children to Datum when
 function logText(id1, id2, doPush, index, varBoolean) {
@@ -269,14 +252,17 @@ function updateDerivative() {
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
 
-function createFunction() {
+function createFunction(x, y) {
+    var xinitial = x === undefined ? width / 2 : x;
+    var yinitial = y === undefined ? height / 8 : y;
+
     var group = circles.selectAll("g")
       .data(functionSet)
       .enter()
       .append("g")
-      .attr("transform", "translate(" + width / 2 + "," + height / 8 + ")")
-      .attr("ix", width / 2)
-      .attr("iy", height / 8)
+      .attr("transform", "translate(" + xinitial + "," + yinitial + ")")
+      .attr("ix", xinitial)
+      .attr("iy", yinitial)
       .on("mousedown", function (d) {
           if (d3.event.button == 0) {
               line = null;
@@ -325,6 +311,7 @@ function createFunction() {
       .attr("y", -10)
       .attr("text-anchor", "middle")
       .text(function (d) {
+          console.log(d);
           return d.data[0];
       });
 }
@@ -341,26 +328,61 @@ function loadFunctions() {
             .classed("data", true)
             .append("td")
             .html(function (d) { return d.data; })
-            .on("click", function (d) {
-                // Code for when a  function is clicked
+            .on("click", function (d, i) {
+                // Code for when a function is clicked
 
                 var xinitial = 200;
                 var yinitial = 200;
 
-                (function recursiveDisplay(node, offsetX, offsetY) {
+                (function recursiveDisplay(node, index, offsetX, offsetY) {
                     var layerOffset = 100;
                     var childOffset = 100;
 
+                    console.log(node.data);
+                    document.getElementById("fun" + index).children[0].value = node.data;
+                    logText(("fun" + index), ('var' + index), true, index, false);
+                    console.log(functionSet);
+                    createFunction(offsetX, offsetY);
 
                     node.children.forEach(function (c, i) {
                         var layerDiff = c.layer - node.layer;
                         
                         var newXoffset = offsetX + (i * childOffset);
                         var newYoffset = offsetY + (layerDiff * layerOffset);
+                        index++;
+                        recursiveDisplay(c, index, newXoffset, newYoffset);
+                        
+                        var src = circles.selectAll("g")
+                            .filter(function (d, i) { return i === index - 1; })
 
-                        recursiveDisplay(c, newXoffset, newYoffset);
+                        var dest = circles.selectAll("g")
+                            .filter(function (d, i) { return i === index; })
+
+                        var points = getLinePoints(src.attr("ix"), src.attr("iy"), dest.attr("ix"), dest.attr("iy"), defaultRadius);
+
+                        // Add connecting line
+                        var tmpline = linesg.append("g");
+
+                        tmpline.append("line")
+                            .attr("x1", points[0])
+                            .attr("y1", points[1])
+                            .attr("x2", points[2])
+                            .attr("y2", points[3])
+                            .attr("stroke-width", 2)
+                            .attr("stroke", "black");
+
+                        var triangle = tmpline.append("polygon")
+                            .classed("arrowhead", true)
+                           .attr("points", getArrowPoints(points[0], points[1], points[2], points[3]))
+                           .attr("fill", "black");
+
+                        lines.push({
+                            "line": tmpline,
+                            "source": src,
+                            "target": dest
+                        });
                     });
-                })(d, xinitial, yinitial);
+                })(d, 0, xinitial, yinitial);
             });
     });
 }
